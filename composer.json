@@ -1,0 +1,24 @@
+{
+    "name": "joni-jones/yii2-novaposhta",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ievgen Sentiabov",
+            "email": "ievgen.sentiabov@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "yiisoft/yii2": "2.*",
+        "guzzlehttp/guzzle": "6.1.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4"
+    },
+    "autoload": {
+        "psr-4": {
+            "jones\\novaposhta\\": ""
+        }
+    }
+}
