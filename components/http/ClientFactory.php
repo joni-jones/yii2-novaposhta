@@ -3,7 +3,7 @@ namespace jones\novaposhta\components\http;
 
 use Yii;
 use yii\base\InvalidConfigException;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * Class ClientFactory
@@ -18,7 +18,7 @@ class ClientFactory
      */
     public function create()
     {
-        $client = new Client();
+        $client = new GuzzleClient();
         $components = Yii::$app->getComponents();
         if (empty($components['novaposhta'])) {
             throw new InvalidConfigException('The "novaposhta" component should be specified');

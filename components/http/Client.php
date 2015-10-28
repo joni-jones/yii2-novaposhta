@@ -65,7 +65,7 @@ class Client implements HttpClientInterface
     private function prepareResponse(ResponseInterface $response)
     {
         $document = new \SimpleXMLElement($response->getBody());
-        return Json::decode(Json::encode((array)$document), true);
+        return Json::decode(Json::encode((array) $document), true);
     }
 }
 
@@ -73,4 +73,4 @@ class Client implements HttpClientInterface
  * Class HttpClientException
  * @package jones\novaposhta\components\http
  */
-class HttpClientException extends Exception{}
+class HttpClientException extends Exception {}
