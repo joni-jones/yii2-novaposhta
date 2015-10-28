@@ -1,38 +1,33 @@
 <?php
-namespace jones\novaposhta\components;
+namespace jones\novaposhta\components\http;
 
 use Yii;
-use GuzzleHttp\Client;
+use yii\base\Exception;
+use yii\helpers\Json;
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\ResponseInterface;
-use yii\base\Exception;
-use yii\base\InvalidConfigException;
-use yii\helpers\Json;
+use jones\novaposhta\components\HttpClientInterface;
+use jones\novaposhta\components\RequestInterface;
 
 /**
- * Class HttpClient
- * @package jones\novaposhta\components
+ * Class Client
+ * @package jones\novaposhta\components\http
  */
-class HttpClient implements HttpClientInterface
+class Client implements HttpClientInterface
 {
     const CONTENT_TYPE = 'text/xml';
 
     const BASE_URL = 'http://orders.novaposhta.ua/xml.php';
-
-    private $apiKey;
 
     /**
      * @var \GuzzleHttp\Client
      */
     private $client;
 
-    public function __construct(Client $httpClient, array $config = [])
+    public function __construct(GuzzleClient $httpClient)
     {
         $this->client = $httpClient;
-        if (empty($config['api_key'])) {
-            throw new InvalidConfigException('The "api_key" should be specified');
-        }
-        $this->apiKey = $config['api_key'];
     }
 
     /**
@@ -47,7 +42,7 @@ class HttpClient implements HttpClientInterface
             'headers' => [
                 'content-type' => self::CONTENT_TYPE
             ],
-            'body' => $this->getRequestBody($request)
+            'body' => $request->getBody()
         ];
         try {
             $response = $this->client->post(self::BASE_URL, $options);
@@ -63,27 +58,6 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
-     * Get request params
-     * @param \jones\novaposhta\components\RequestInterface $request
-     * @return string
-     */
-    private function getRequestBody(RequestInterface $request)
-    {
-        $document = new \SimpleXMLElement('file');
-        $document->addChild('auth', $this->apiKey);
-        $data = $request->getBody();
-        $key = $request->getKey();
-        if ($key) {
-            $document->addChild($request->getKey(), !empty($data) ? $data : '');
-        }
-        $filters = $request->getFilters();
-        if (!empty($filters)) {
-            $document->addChild('filter', $filters);
-        }
-        return $document->asXML();
-    }
-
-    /**
      * Convert string xml response to array
      * @param ResponseInterface $response
      * @return array
@@ -91,12 +65,12 @@ class HttpClient implements HttpClientInterface
     private function prepareResponse(ResponseInterface $response)
     {
         $document = new \SimpleXMLElement($response->getBody());
-        return Json::decode(Json::encode($document), true);
+        return Json::decode(Json::encode((array)$document), true);
     }
 }
 
 /**
  * Class HttpClientException
- * @package jones\novaposhta\components
+ * @package jones\novaposhta\components\http
  */
 class HttpClientException extends Exception{}

@@ -11,6 +11,8 @@ use yii\helpers\ArrayHelper;
  */
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
+    const API_KEY = '3wb23DmB1';
+
     /**
      * Create app for run tests
      * @param array $config
