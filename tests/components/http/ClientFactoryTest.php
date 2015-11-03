@@ -1,11 +1,11 @@
 <?php
 namespace components;
 
-use Yii;
 use jones\novaposhta\components\http\Client;
 use jones\novaposhta\components\http\ClientFactory;
 use jones\novaposhta\components\HttpClientInterface;
 use jones\novaposhta\tests\TestCase;
+use Yii;
 
 /**
  * Class ClientFactoryTest
@@ -29,8 +29,23 @@ class ClientFactoryTest extends TestCase
      * @expectedException \yii\base\InvalidConfigException
      * @expectedExceptionMessage The "novaposhta" component should be specified
      */
-    public function testCreateWithConfigException()
+    public function testCreateWithComponentClassException()
     {
+        $this->httpClientFactory->create();
+    }
+
+    /**
+     * @covers \jones\novaposhta\components\http\ClientFactory::create()
+     * @expectedException \yii\base\InvalidConfigException
+     * @expectedExceptionMessage The api "url" should be specified
+     */
+    public function testCreateWithComponentUrlException()
+    {
+        Yii::$app->setComponents([
+            'novaposhta' => [
+                'class' => Client::class,
+            ]
+        ]);
         $this->httpClientFactory->create();
     }
 
@@ -43,6 +58,7 @@ class ClientFactoryTest extends TestCase
         Yii::$app->setComponents([
             'novaposhta' => [
                 'class' => Client::class,
+                'url' => 'https://test.api.com'
             ]
         ]);
         $client = $this->httpClientFactory->create();

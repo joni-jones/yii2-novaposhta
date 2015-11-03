@@ -1,14 +1,14 @@
 <?php
 namespace jones\novaposhta\components\http;
 
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
+use jones\novaposhta\components\HttpClientInterface;
+use jones\novaposhta\components\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\Json;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
-use Psr\Http\Message\ResponseInterface;
-use jones\novaposhta\components\HttpClientInterface;
-use jones\novaposhta\components\RequestInterface;
 
 /**
  * Class Client
@@ -21,13 +21,19 @@ class Client implements HttpClientInterface
     const BASE_URL = 'http://orders.novaposhta.ua/xml.php';
 
     /**
+     * @var string api gateway url
+     */
+    private $url;
+
+    /**
      * @var \GuzzleHttp\Client
      */
     private $client;
 
-    public function __construct(GuzzleClient $httpClient)
+    public function __construct(GuzzleClient $httpClient, $url)
     {
         $this->client = $httpClient;
+        $this->url = $url;
     }
 
     /**
@@ -45,7 +51,7 @@ class Client implements HttpClientInterface
             'body' => $request->getBody()
         ];
         try {
-            $response = $this->client->post(self::BASE_URL, $options);
+            $response = $this->client->post($this->url, $options);
         } catch (ClientException $e) {
             Yii::error($e->getRequest());
             if ($e->hasResponse()) {

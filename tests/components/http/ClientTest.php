@@ -1,14 +1,14 @@
 <?php
 namespace jones\novaposhta\tests\components\http;
 
-use Yii;
-use jones\novaposhta\components\http\Client;
-use jones\novaposhta\components\Request;
-use jones\novaposhta\tests\TestCase;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use jones\novaposhta\components\http\Client;
+use jones\novaposhta\components\Request;
+use jones\novaposhta\tests\TestCase;
+use Yii;
 
 /**
  * Class ClientTest
@@ -46,13 +46,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $handler = HandlerStack::create($mockHandler);
         $this->guzzleClient = new GuzzleClient(['handler' => $handler]);
 
-         $this->request = $this->getMockBuilder(Request::class)
-             ->disableOriginalConstructor()
-             ->setMethods(['getBody'])
-             ->getMock();
+        $this->request = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getBody'])
+            ->getMock();
 
         $this->httpClient = Yii::createObject(Client::class, [
-            $this->guzzleClient
+            $this->guzzleClient,
+            'https://test.api.com'
         ]);
     }
 
@@ -87,10 +88,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     private function getSuccessRequest()
     {
-        libxml_use_internal_errors(true);
-        $document = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><file/>');
-        $document->addChild('auth', TestCase::API_KEY);
-        $document->addChild('order', 'test description');
+        $document = simplexml_load_file(__DIR__.'/data/success_response.xml');
         $result = $document->asXML();
         return $result;
     }
@@ -101,10 +99,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     private function getSuccessResponse()
     {
-        $document = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><file/>');
-        $document->addChild('successCode', Request::SUCCESS_STATUS);
+        $document = simplexml_load_file(__DIR__.'/data/success_response.xml');
         $result = $document->asXML();
         return $result;
     }
 }
+
  
