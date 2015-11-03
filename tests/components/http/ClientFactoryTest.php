@@ -1,7 +1,7 @@
 <?php
 namespace components;
 
-use jones\novaposhta\components\http\Client;
+use jones\novaposhta\components\Api;
 use jones\novaposhta\components\http\ClientFactory;
 use jones\novaposhta\components\HttpClientInterface;
 use jones\novaposhta\tests\TestCase;
@@ -42,8 +42,8 @@ class ClientFactoryTest extends TestCase
     public function testCreateWithComponentUrlException()
     {
         Yii::$app->setComponents([
-            'novaposhta' => [
-                'class' => Client::class,
+            Api::COMPONENT_NAME => [
+                'class' => Api::class,
             ]
         ]);
         $this->httpClientFactory->create();
@@ -56,8 +56,8 @@ class ClientFactoryTest extends TestCase
     public function testCreate()
     {
         Yii::$app->setComponents([
-            'novaposhta' => [
-                'class' => Client::class,
+            Api::COMPONENT_NAME => [
+                'class' => Api::class,
                 'url' => 'https://test.api.com'
             ]
         ]);
