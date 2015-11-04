@@ -48,7 +48,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuild()
     {
-        $document = simplexml_load_file(__DIR__.'/data/order_request.xml');
+        $document = simplexml_load_file(__DIR__ . '/data/order_request.xml');
         $body = $document->asXML();
         $params = $this->getRequestDocument();
         $this->request->build($params);
@@ -61,14 +61,13 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildWithFilter()
     {
-        $document = simplexml_load_file(__DIR__.'/data/order_request.xml');
+        $document = simplexml_load_file(__DIR__ . '/data/order_request.xml');
         $document->addChild('filter', 'Kiev');
-        $body = $document->asXML();
+        $body = $document->saveXML();
 
         $params = $this->getRequestDocument();
 
         $this->request->build($params, 'Kiev');
-
         static::assertXmlStringEqualsXmlString($body, $this->request->getBody());
     }
 
@@ -101,7 +100,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBody()
     {
-        $document = simplexml_load_file(__DIR__.'/data/default_request.xml');
+        $document = simplexml_load_file(__DIR__ . '/data/default_request.xml');
         $body = $document->asXML();
 
         $params = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><file/>');

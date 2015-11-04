@@ -7,7 +7,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use jones\novaposhta\components\http\Client;
 use jones\novaposhta\components\Request;
-use jones\novaposhta\tests\TestCase;
 use Yii;
 
 /**
@@ -88,7 +87,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     private function getSuccessRequest()
     {
-        $document = simplexml_load_file(__DIR__.'/data/success_response.xml');
+        $document = simplexml_load_file(__DIR__ . '/data/success_response.xml');
         $result = $document->asXML();
         return $result;
     }
@@ -99,10 +98,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     private function getSuccessResponse()
     {
-        $document = simplexml_load_file(__DIR__.'/data/success_response.xml');
+        $document = simplexml_load_file(__DIR__ . '/data/success_response.xml');
         $result = $document->asXML();
         return $result;
     }
 }
-
- 

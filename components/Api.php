@@ -9,4 +9,5 @@ class Api
 {
     const COMPONENT_NAME = 'novaposhta';
 }
+
  
