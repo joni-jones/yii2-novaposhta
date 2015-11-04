@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<file>
+    <auth>ei4ed5fM1</auth>
+    <order
+            order_id="120023"
+            sender_city="Kiev"
+            sender_company="No Name"
+            sender_address="1"
+            sender_contact="Vladimir"
+            sender_phone="0960000001"
+
+            rcpt_city_name="Vinnitsya"
+            rcpt_name="Person"
+            rcpt_warehouse="5"
+            rcpt_contact="Ivan"
+            rcpt_phone_num="0980000001"
+
+            pack_type="box"
+            description="shoes"
+
+            pay_type="1"
+            payer="1"
+
+            cost="200"
+            weight="0,1">
+        <order_cont cont_description="Circle"/>
+    </order>
+</file>

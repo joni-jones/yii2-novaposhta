@@ -1,13 +1,29 @@
 <?php
 namespace jones\novaposhta\components;
 
+/**
+ * Interface RequestInterface
+ * @package jones\novaposhta\components
+ */
 interface RequestInterface
 {
-    public function getKey();
 
+    /**
+     * Return body of request
+     * @return string in xml format
+     */
     public function getBody();
 
-    public function getFilters();
+    /**
+     * Create request from params
+     * @param \SimpleXMLElement $params
+     * @param string $filter
+     */
+    public function build(\SimpleXMLElement $params, $filter = '');
 
-    public function setFilters(array $filters);
+    /**
+     * Process request
+     * @return array
+     */
+    public function execute();
 }
