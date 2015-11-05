@@ -4,6 +4,7 @@ namespace jones\novaposhta\tests\components;
 use jones\novaposhta\components\http\Client;
 use jones\novaposhta\components\http\ClientFactory;
 use jones\novaposhta\components\Request;
+use SimpleXMLElement;
 use Yii;
 
 /**
@@ -48,12 +49,13 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuild()
     {
-        $document = simplexml_load_file(__DIR__ . '/data/order_request.xml');
-        $body = $document->asXML();
-        $params = $this->getRequestDocument();
-        $this->request->build($params);
+        $expected = $this->xmlToDomElement(file_get_contents(__DIR__ . '/data/order_request.xml'));
 
-        static::assertXmlStringEqualsXmlString($body, $this->request->getBody());
+        $params = $this->getRequestDocument();
+
+        $this->request->build($params);
+        $actual = $this->xmlToDomElement($this->request->getBody());
+        static::assertEqualXMLStructure($expected, $actual, true);
     }
 
     /**
@@ -63,12 +65,13 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $document = simplexml_load_file(__DIR__ . '/data/order_request.xml');
         $document->addChild('filter', 'Kiev');
-        $body = $document->saveXML();
+        $expected = $this->xmlToDomElement($document->asXML());
 
         $params = $this->getRequestDocument();
 
         $this->request->build($params, 'Kiev');
-        static::assertXmlStringEqualsXmlString($body, $this->request->getBody());
+        $actual = $this->xmlToDomElement($this->request->getBody());
+        static::assertEqualXMLStructure($expected, $actual, true);
     }
 
     /**
@@ -100,12 +103,24 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBody()
     {
-        $document = simplexml_load_file(__DIR__ . '/data/default_request.xml');
-        $body = $document->asXML();
+        $expected = $this->xmlToDomElement(file_get_contents(__DIR__ . '/data/default_request.xml'));
 
         $params = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><file/>');
         $this->request->build($params);
-        static::assertXmlStringEqualsXmlString($body, $this->request->getBody());
+        $actual = $this->xmlToDomElement($this->request->getBody());
+        static::assertEqualXMLStructure($expected, $actual, true);
+    }
+
+    /**
+     * Convert xml string to DomElement
+     * @param $xml
+     * @return \DOMElement
+     */
+    private function xmlToDomElement($xml)
+    {
+        $document = new SimpleXMLElement($xml);
+        $domElement = dom_import_simplexml($document);
+        return $domElement;
     }
 
     /**
