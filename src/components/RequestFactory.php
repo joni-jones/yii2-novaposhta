@@ -1,6 +1,7 @@
 <?php
 namespace jones\novaposhta\components;
 
+use jones\novaposhta\Api;
 use jones\novaposhta\components\http\ClientFactory;
 use Yii;
 use yii\base\InvalidConfigException;

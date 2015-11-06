@@ -1,7 +1,7 @@
 <?php
 namespace components;
 
-use jones\novaposhta\components\Api;
+use jones\novaposhta\Api;
 use jones\novaposhta\components\http\ClientFactory;
 use jones\novaposhta\components\HttpClientInterface;
 use jones\novaposhta\tests\TestCase;

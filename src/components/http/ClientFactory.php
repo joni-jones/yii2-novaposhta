@@ -2,7 +2,7 @@
 namespace jones\novaposhta\components\http;
 
 use GuzzleHttp\Client as GuzzleClient;
-use jones\novaposhta\components\Api;
+use jones\novaposhta\Api;
 use Yii;
 use yii\base\InvalidConfigException;
 

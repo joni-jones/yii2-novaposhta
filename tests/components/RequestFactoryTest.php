@@ -1,8 +1,7 @@
 <?php
 namespace jones\novaposhta\tests;
 
-use jones\novaposhta\components\Api;
-use jones\novaposhta\components\http\Client;
+use jones\novaposhta\Api;
 use jones\novaposhta\components\RequestFactory;
 use jones\novaposhta\components\RequestInterface;
 use Yii;

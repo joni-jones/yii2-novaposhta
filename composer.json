@@ -1,5 +1,7 @@
 {
     "name": "joni-jones/yii2-novaposhta",
+    "description": "Yii2 extension to work with Nova Poshta web api",
+    "keywords": ["yii2","extension","api","novaposhta"],
     "type": "yii2-extension",
     "license": "MIT",
     "authors": [
@@ -19,7 +21,12 @@
     },
     "autoload": {
         "psr-4": {
-            "jones\\novaposhta\\": ""
+            "jones\\novaposhta\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "jones\\novaposhta\\tests\\": "tests"
         }
     }
 }

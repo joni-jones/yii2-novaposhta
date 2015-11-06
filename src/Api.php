@@ -1,5 +1,5 @@
 <?php
-namespace jones\novaposhta\components;
+namespace jones\novaposhta;
 
 /**
  * Class Api
