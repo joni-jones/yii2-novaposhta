@@ -32,6 +32,28 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \jones\novaposhta\Api::addError()
+     */
+    public function testAddError()
+    {
+        $this->api->addError('Test error message');
+        static::assertEquals(1, sizeof($this->api->getErrors()));
+    }
+
+    /**
+     * @covers \jones\novaposhta\Api::getErrors()
+     */
+    public function testGetErrors()
+    {
+        static::assertEmpty($this->api->getErrors());
+        $this->api->addError('Api error message first');
+        $this->api->addError('Api error message second');
+        $errors = $this->api->getErrors();
+        static::assertTrue(is_array($errors));
+        static::assertEquals(2, sizeof($errors));
+    }
+
+    /**
      * @covers \jones\novaposhta\Api::createRequestFromArray()
      */
     public function testCreateRequestFromArray()

@@ -18,6 +18,8 @@ class Api
      */
     protected $requestFactory;
 
+    private $errors = [];
+
     public function __construct(RequestFactory $requestFactory)
     {
         $this->requestFactory = $requestFactory;
@@ -30,6 +32,24 @@ class Api
     public function validate()
     {
         throw new NotSupportedException('This method should be implemented in children classes');
+    }
+
+    /**
+     * Store error
+     * @param $error
+     */
+    public function addError($error)
+    {
+        $this->errors[] = $error;
+    }
+
+    /**
+     * Get all errors
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 
     /**

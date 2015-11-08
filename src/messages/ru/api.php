@@ -12,5 +12,9 @@ return [
     'Pallets' => '',
     'Products' => '',
     'Other' => '',
-    'Express consignment carrier' => ''
+    'Express consignment carrier' => '',
+    'Unsupported redelivery payer for current redelivery type' => '',
+    'Redelivery payer should be specified' => 'Указана обратная доставка, но не указано плательщика обратной доставки',
+    'Invalid payer type for pallets redelivery' =>
+        'При обратной доставке поддонов плательщиком обратной доставки может быть только Отправитель',
 ];
