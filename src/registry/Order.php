@@ -156,18 +156,19 @@ class Order extends Api
             return false;
         }
         $payerType = $attributes['redelivery_payment_payer'];
-        if (
-            $type == self::REDELIVERY_TYPE_EXPRESS_CONSIGNMENT_CARRIER &&
-            $payerType != self::REDELIVERY_PAYER_SENDER
-        ) {
-            $this->addError(Yii::t('api', 'Unsupported redelivery payer for current redelivery type'));
-            return false;
-        }
-        if ($type == self::REDELIVERY_TYPE_PALLET &&
-            $payerType == self::REDELIVERY_PAYER_RECEIVER
-        ) {
-            $this->addError(Yii::t('api', 'Invalid payer type for pallets redelivery'));
-            return false;
+        switch ($type) {
+            case self::REDELIVERY_TYPE_EXPRESS_CONSIGNMENT_CARRIER:
+                if ($payerType != self::REDELIVERY_PAYER_SENDER) {
+                    $this->addError(Yii::t('api', 'Unsupported redelivery payer for current redelivery type'));
+                    return false;
+                }
+                break;
+            case self::REDELIVERY_TYPE_PALLET:
+                if ($payerType == self::REDELIVERY_PAYER_RECEIVER) {
+                    $this->addError(Yii::t('api', 'Invalid payer type for pallets redelivery'));
+                    return false;
+                }
+                break;
         }
         return true;
     }
