@@ -28,7 +28,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidate()
     {
-        $this->api->validate();
+        $this->api->validate([]);
     }
 
     /**

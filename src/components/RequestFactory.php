@@ -17,7 +17,7 @@ class RequestFactory
      * @return \jones\novaposhta\components\RequestInterface
      * @throws InvalidConfigException
      */
-    public static function create()
+    public function create()
     {
         $components = Yii::$app->getComponents();
         if (empty($components[Api::COMPONENT_NAME]) || empty($components[Api::COMPONENT_NAME]['api_key'])) {

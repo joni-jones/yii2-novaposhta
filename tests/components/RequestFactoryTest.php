@@ -48,5 +48,3 @@ class RequestFactoryTest extends TestCase
         static::assertTrue($request instanceof RequestInterface);
     }
 }
-
- 

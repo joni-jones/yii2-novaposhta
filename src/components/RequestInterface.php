@@ -18,6 +18,7 @@ interface RequestInterface
      * Create request from params
      * @param \SimpleXMLElement $params
      * @param string $filter
+     * @return RequestInterface
      */
     public function build(\SimpleXMLElement $params, $filter = '');
 

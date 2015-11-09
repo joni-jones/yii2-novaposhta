@@ -27,9 +27,10 @@ class Api
 
     /**
      * Validate api request params
+     * @param array $params
      * @throws NotSupportedException
      */
-    public function validate()
+    public function validate(array $params)
     {
         throw new NotSupportedException('This method should be implemented in children classes');
     }

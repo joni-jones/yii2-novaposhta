@@ -109,4 +109,66 @@ class Order extends Api
             self::REDELIVERY_PAYER_RECEIVER => Yii::t('api', 'Receiver')
         ];
     }
+
+    /**
+     * @param array $params
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function create(array $params)
+    {
+        if (!$this->validate($params)) {
+            return false;
+        }
+        $document = $this->createRequestFromArray($params, 'order');
+        $request = $this->requestFactory->create();
+        $response = $request->build($document)->execute();
+        return $response['np_id'];
+    }
+
+    /**
+     * Validate request params
+     * @param array $params
+     * @return bool
+     */
+    public function validate(array $params)
+    {
+        // validate redelivery type
+        if (
+            !empty($params['redelivery_type']) &&
+            !$this->validateRedeliveryType($params['redelivery_type'], $params)
+        ) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Validate order redelivery type
+     * @param $type
+     * @param $attributes
+     * @return bool
+     */
+    protected function validateRedeliveryType($type, $attributes)
+    {
+        if (empty($attributes['redelivery_payment_payer'])) {
+            $this->addError(Yii::t('api', 'Redelivery payer should be specified'));
+            return false;
+        }
+        $payerType = $attributes['redelivery_payment_payer'];
+        if (
+            $type == self::REDELIVERY_TYPE_EXPRESS_CONSIGNMENT_CARRIER &&
+            $payerType != self::REDELIVERY_PAYER_SENDER
+        ) {
+            $this->addError(Yii::t('api', 'Unsupported redelivery payer for current redelivery type'));
+            return false;
+        }
+        if ($type == self::REDELIVERY_TYPE_PALLET &&
+            $payerType == self::REDELIVERY_PAYER_RECEIVER
+        ) {
+            $this->addError(Yii::t('api', 'Invalid payer type for pallets redelivery'));
+            return false;
+        }
+        return true;
+    }
 }
