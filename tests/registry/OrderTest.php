@@ -116,4 +116,21 @@ class OrderTest extends \PHPUnit_Framework_TestCase
         $result = $this->order->create($params);
         static::assertEquals($np_id, $result);
     }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::delete()
+     */
+    public function testDelete()
+    {
+        $np_id = '20151111213435';
+        $this->request->expects(static::once())
+            ->method('build')
+            ->willReturnSelf();
+        $this->request->expects(static::once())
+            ->method('execute')
+            ->willReturn([
+                'close' => Order::STATUS_DELETED
+            ]);
+        static::assertTrue($this->order->delete($np_id));
+    }
 }

@@ -40,6 +40,12 @@ class Order extends Api
 
     const REDELIVERY_PAYER_RECEIVER = 2;
 
+    const STATUS_CANCELED = 'CANCELED';
+
+    const STATUS_DELETED = 'DELETED';
+
+    const STATUS_FAILED = 'FAILED';
+
     /**
      * Get list of available pay types
      * @static
@@ -121,8 +127,7 @@ class Order extends Api
             return false;
         }
         $document = $this->createRequestFromArray($params, 'order');
-        $request = $this->requestFactory->create();
-        $response = $request->build($document)->execute();
+        $response = $this->execute($document);
         return $response['np_id'];
     }
 
@@ -141,6 +146,18 @@ class Order extends Api
             return false;
         }
         return true;
+    }
+
+    /**
+     * Delete exists order or cancel order in processing status
+     * @param $id
+     * @return bool
+     */
+    public function delete($id)
+    {
+        $document = $this->createRequest($id, 'close');
+        $response = $this->execute($document);
+        return ($response['close'] != self::STATUS_FAILED);
     }
 
     /**

@@ -61,9 +61,44 @@ class Api
      */
     public function createRequestFromArray(array $params, $rootNode)
     {
-        $document = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><file/>');
+        $document = $this->createDocument();
         $node = $document->addChild($rootNode);
         $this->appendAttributes($node, $params);
+        return $document;
+    }
+
+    /**
+     * Create xml request document for simple value
+     * @param $value
+     * @param $rootNode
+     * @return SimpleXMLElement
+     */
+    public function createRequest($value, $rootNode)
+    {
+        $document = $this->createDocument();
+        $document->addChild($rootNode, $value);
+        return $document;
+    }
+
+    /**
+     * Execute request
+     * @param SimpleXMLElement $document
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function execute(SimpleXMLElement $document)
+    {
+        $request = $this->requestFactory->create();
+        return $request->build($document)->execute();
+    }
+
+    /**
+     * Create xml document for request
+     * @return SimpleXMLElement
+     */
+    private function createDocument()
+    {
+        $document = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><file/>');
         return $document;
     }
 
