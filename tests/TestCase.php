@@ -1,6 +1,8 @@
 <?php
 namespace jones\novaposhta\tests;
 
+use jones\novaposhta\components\Request;
+use jones\novaposhta\components\RequestFactory;
 use Yii;
 use yii\console\Application;
 use yii\helpers\ArrayHelper;
@@ -14,6 +16,11 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     const API_KEY = '3wb23DmB1';
 
     /**
+     * @var \jones\novaposhta\components\Request|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $request;
+
+    /**
      * Create app for run tests
      * @param array $config
      * @throws \yii\base\InvalidConfigException
@@ -25,7 +32,17 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
                 'id' => 'testapp',
                 'basePath' => __DIR__,
                 'vendorPath' => __DIR__ . '/../vendor',
-                'components' => []
+                'components' => [
+                    'i18n' => [
+                        'translations' => [
+                            '*' => [
+                                'class' => 'yii\i18n\PhpMessageSource',
+                                'basePath' => '@novaposhta/messages',
+                                'sourceLanguage' => 'en',
+                            ],
+                        ]
+                    ],
+                ]
             ],
             $config
         );
@@ -35,5 +52,29 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         Yii::$app = null;
+    }
+
+    /**
+     * Create mock for request and get request factory mock
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getRequestFactory()
+    {
+        $this->request = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['build', 'execute', '__wakeup'])
+            ->getMock();
+
+        $this->request->expects(static::any())
+            ->method('build')
+            ->willReturnSelf();
+
+        $requestFactory = $this->getMockBuilder(RequestFactory::class)
+            ->setMethods(['create'])
+            ->getMock();
+        $requestFactory->expects(static::any())
+            ->method('create')
+            ->willReturn($this->request);
+        return $requestFactory;
     }
 }

@@ -1,37 +1,24 @@
 <?php
 namespace jones\novaposhta\tests\registry;
 
-use jones\novaposhta\components\Request;
-use jones\novaposhta\components\RequestFactory;
 use jones\novaposhta\registry\Order;
+use jones\novaposhta\tests\TestCase;
 use Yii;
 
-class OrderTest extends \PHPUnit_Framework_TestCase
+/**
+ * Class OrderTest
+ * @package jones\novaposhta\tests\registry
+ */
+class OrderTest extends TestCase
 {
     /**
      * @var \jones\novaposhta\registry\Order
      */
     private $order;
 
-    /**
-     * @var \jones\novaposhta\components\Request|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $request;
-
     protected function setUp()
     {
-        $this->request = $this->getMockBuilder(Request::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['build', 'execute', '__wakeup'])
-            ->getMock();
-
-        $requestFactory = $this->getMockBuilder(RequestFactory::class)
-            ->setMethods(['create'])
-            ->getMock();
-        $requestFactory->expects(static::any())
-            ->method('create')
-            ->willReturn($this->request);
-
+        $requestFactory = $this->getRequestFactory();
         $this->order = Yii::createObject(Order::class, [$requestFactory]);
     }
 
@@ -104,10 +91,6 @@ class OrderTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->request->expects(static::once())
-            ->method('build')
-            ->willReturnSelf();
-
-        $this->request->expects(static::once())
             ->method('execute')
             ->willReturn([
                 'order_id' => $order_id,
@@ -123,9 +106,6 @@ class OrderTest extends \PHPUnit_Framework_TestCase
     public function testDelete()
     {
         $np_id = '20151111213435';
-        $this->request->expects(static::once())
-            ->method('build')
-            ->willReturnSelf();
         $this->request->expects(static::once())
             ->method('execute')
             ->willReturn([

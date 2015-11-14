@@ -45,6 +45,23 @@ class Api
     }
 
     /**
+     * Store list of errors
+     * @param array $items
+     */
+    public function addErrors(array $items)
+    {
+        foreach ($items as $attribute => $errors) {
+            if (is_array($errors)) {
+                foreach ($errors as $error) {
+                    $this->addError($error);
+                }
+            } else {
+                $this->addError($errors);
+            }
+        }
+    }
+
+    /**
      * Get all errors
      * @return array
      */
@@ -85,6 +102,7 @@ class Api
      * @param SimpleXMLElement $document
      * @return array
      * @throws \yii\base\InvalidConfigException
+     * @throws \jones\novaposhta\components\http\HttpClientException
      */
     protected function execute(SimpleXMLElement $document)
     {

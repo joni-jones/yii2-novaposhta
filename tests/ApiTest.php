@@ -41,6 +41,23 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \jones\novaposhta\Api::addErrors()
+     */
+    public function testAddErrors()
+    {
+        $message1 = '"Mass" should be not empty';
+        $message2 = '"Mass" should be positive';
+        $errors = [
+            'mass' => [
+                $message1, $message2
+            ]
+        ];
+        $expected = [$message1, $message2];
+        $this->api->addErrors($errors);
+        static::assertEquals($expected, $this->api->getErrors());
+    }
+
+    /**
      * @covers \jones\novaposhta\Api::getErrors()
      */
     public function testGetErrors()
