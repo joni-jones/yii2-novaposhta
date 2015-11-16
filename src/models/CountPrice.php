@@ -2,6 +2,7 @@
 namespace jones\novaposhta\models;
 
 use jones\novaposhta\delivery\Estimation;
+use jones\novaposhta\helpers\Formatter;
 use Yii;
 use yii\base\Model;
 
@@ -24,6 +25,8 @@ use yii\base\Model;
  */
 class CountPrice extends Model
 {
+    use Formatter;
+
     /**
      * @var string
      */
@@ -109,18 +112,8 @@ class CountPrice extends Model
             ['deliveryType_id', 'in', 'range' => array_keys(Estimation::getDeliveryTypeList())],
             ['loadType_id', 'in', 'range' => array_keys(Estimation::getLoadTypeList())],
             [['date'], 'date', 'format' => 'dd.MM.yyyy'],
-            [['publicPrice', 'postpay_sum'], 'formatAmount'],
+            [['publicPrice', 'postpay_sum'], 'convertAmount'],
         ];
-    }
-
-    /**
-     * Convert amount to 0,00 format
-     * @param $attribute
-     * @param $params
-     */
-    public function formatAmount($attribute, $params)
-    {
-        $this->$attribute = str_replace('.', ',', sprintf('%.2F', $this->$attribute));
     }
 
     /**
@@ -142,5 +135,14 @@ class CountPrice extends Model
             'postpay_sum' => Yii::t('api', 'Postpay sum'),
             'date' => Yii::t('api', 'Date'),
         ];
+    }
+
+    /**
+     * Convert amount
+     * @param $attribute
+     */
+    public function convertAmount($attribute)
+    {
+        $this->$attribute = $this->formatPrice($this->$attribute);
     }
 }
