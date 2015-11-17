@@ -9,3 +9,6 @@ filter:
 
 before_commands:
   - "composer install --prefer-source"
+  
+tools:
+  external_code_coverage: true
