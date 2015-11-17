@@ -7,23 +7,19 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use jones\novaposhta\components\http\Client;
 use jones\novaposhta\components\Request;
+use jones\novaposhta\tests\TestCase;
 use Yii;
 
 /**
  * Class ClientTest
  * @package jones\novaposhta\tests\components\http
  */
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends TestCase
 {
     /**
      * @var \jones\novaposhta\components\http\Client
      */
     private $httpClient;
-
-    /**
-     * @var \jones\novaposhta\components\Request|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $request;
 
     /**
      * @var \GuzzleHttp\Client
@@ -57,7 +53,18 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\components\http\Client::execute()
+     * @covers \jones\novaposhta\components\http\Client::__construct
+     */
+    public function testHttpClientConstructor()
+    {
+        $this->invokeConstructor(Client::class, [
+            Yii::createObject(GuzzleClient::class),
+            'url' => Client::BASE_URL
+        ]);
+    }
+
+    /**
+     * @covers \jones\novaposhta\components\http\Client::execute
      */
     public function testExecute()
     {

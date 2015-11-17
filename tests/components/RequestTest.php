@@ -4,6 +4,7 @@ namespace jones\novaposhta\tests\components;
 use jones\novaposhta\components\http\Client;
 use jones\novaposhta\components\http\ClientFactory;
 use jones\novaposhta\components\Request;
+use jones\novaposhta\tests\TestCase;
 use SimpleXMLElement;
 use Yii;
 
@@ -11,14 +12,9 @@ use Yii;
  * Class RequestTest
  * @package jones\novaposhta\tests\components
  */
-class RequestTest extends \PHPUnit_Framework_TestCase
+class RequestTest extends TestCase
 {
     const API_KEY = 'ei4ed5fM1';
-
-    /**
-     * @var \jones\novaposhta\components\Request
-     */
-    private $request;
 
     /**
      * @var \jones\novaposhta\components\http\Client|\PHPUnit_Framework_MockObject_MockObject
@@ -40,6 +36,27 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $this->request = Yii::createObject(Request::class, [
             $httpClientFactory,
+            ['api_key' => self::API_KEY]
+        ]);
+    }
+
+    /**
+     * @covers \jones\novaposhta\components\Request::__construct
+     * @expectedException \yii\base\InvalidConfigException
+     * @expectedExceptionMessage The "api_key" should be specified
+     */
+    public function testConstructorWithException()
+    {
+        $this->invokeConstructor(Request::class, [Yii::createObject(ClientFactory::class)]);
+    }
+
+    /**
+     * @covers \jones\novaposhta\components\Request::__construct
+     */
+    public function testRequestConstructor()
+    {
+        $this->invokeConstructor(Request::class, [
+            Yii::createObject(ClientFactory::class),
             ['api_key' => self::API_KEY]
         ]);
     }

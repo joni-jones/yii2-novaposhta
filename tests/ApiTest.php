@@ -2,13 +2,14 @@
 namespace jones\novaposhta\tests;
 
 use jones\novaposhta\Api;
+use jones\novaposhta\components\RequestFactory;
 use Yii;
 
 /**
  * Class ApiTest
  * @package jones\novaposhta\tests
  */
-class ApiTest extends \PHPUnit_Framework_TestCase
+class ApiTest extends TestCase
 {
     /**
      * @var \jones\novaposhta\Api
@@ -21,7 +22,15 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\Api::validate()
+     * @covers \jones\novaposhta\Api::__construct
+     */
+    public function testApiConstructor()
+    {
+        $this->invokeConstructor(Api::class, [Yii::createObject(RequestFactory::class)]);
+    }
+
+    /**
+     * @covers \jones\novaposhta\Api::validate
      * @throws \yii\base\NotSupportedException
      * @expectedException \yii\base\NotSupportedException
      * @expectedExceptionMessage This method should be implemented in children classes
@@ -32,7 +41,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\Api::addError()
+     * @covers \jones\novaposhta\Api::addError
      */
     public function testAddError()
     {
@@ -41,9 +50,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\Api::addErrors()
+     * @covers \jones\novaposhta\Api::addErrors
      */
-    public function testAddErrors()
+    public function testAddErrorsMultiple()
     {
         $message1 = '"Mass" should be not empty';
         $message2 = '"Mass" should be positive';
@@ -58,7 +67,19 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\Api::getErrors()
+     * @covers \jones\novaposhta\Api::addErrors
+     */
+    public function testAddErrorsSingle()
+    {
+        $errors = ['"Order Id" should not be empty'];
+        $this->api->addErrors($errors);
+        $actual = $this->api->getErrors();
+        static::assertEquals(1, sizeof($actual));
+        static::assertEquals($errors, $actual);
+    }
+
+    /**
+     * @covers \jones\novaposhta\Api::getErrors
      */
     public function testGetErrors()
     {
@@ -71,7 +92,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\Api::createRequestFromArray()
+     * @covers \jones\novaposhta\Api::createRequestFromArray
      */
     public function testCreateRequestFromArray()
     {
@@ -88,10 +109,21 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         /** @var \SimpleXMLElement $request */
         $request = $this->api->createRequestFromArray($params, 'order');
 
-        static::assertTrue($request instanceof \SimpleXMLElement);
-        static::assertTrue(!empty($request->order));
+        static::assertInstanceOf(\SimpleXMLElement::class, $request);
+        static::assertNotEmpty($request->order);
         static::assertEquals($order_id, (string) $request->order['order_id']);
-        static::assertTrue($request->order->details instanceof \SimpleXMLElement);
+        static::assertInstanceOf(\SimpleXMLElement::class, $request->order->details);
         static::assertEquals($description, (string) $request->order->details['description']);
+    }
+
+    /**
+     * @covers \jones\novaposhta\Api::createRequest
+     */
+    public function testCreateRequest()
+    {
+        $orderId = '342323432';
+        $request = $this->api->createRequest($orderId, 'order');
+        static::assertNotEmpty($request->order);
+        static::assertEquals($orderId, (string) $request->order);
     }
 }

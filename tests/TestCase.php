@@ -62,7 +62,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         $this->request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
-            ->setMethods(['build', 'execute', '__wakeup'])
+            ->setMethods(['build', 'execute', '__wakeup', 'getBody'])
             ->getMock();
 
         $this->request->expects(static::any())
@@ -76,5 +76,32 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             ->method('create')
             ->willReturn($this->request);
         return $requestFactory;
+    }
+
+    /**
+     * Get mock for constructor of class
+     * @param $className
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getConstructorMock($className)
+    {
+        $mock = $this->getMockBuilder($className)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $mock;
+    }
+
+    /**
+     * Create object from received class name and invoke constructor with arguments
+     * @param string $className
+     * @param array $arguments
+     */
+    protected function invokeConstructor($className, array $arguments = [])
+    {
+        $mock = $this->getConstructorMock($className);
+        $reflection = new \ReflectionClass($className);
+        $constructor = $reflection->getConstructor();
+        $constructor->invokeArgs($mock, $arguments);
     }
 }

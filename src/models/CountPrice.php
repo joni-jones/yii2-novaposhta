@@ -89,6 +89,7 @@ class CountPrice extends Model
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function rules()
     {
@@ -131,8 +132,8 @@ class CountPrice extends Model
             'publicPrice' => Yii::t('api', 'Public price'),
             'deliveryType_id' => Yii::t('api', 'Delivery type'),
             'loadType_id' => Yii::t('api', 'Load type'),
-            'floor_count' => Yii::t('api', 'Floor count'),
             'postpay_sum' => Yii::t('api', 'Postpay sum'),
+            'floor_count' => Yii::t('api', 'Floor count'),
             'date' => Yii::t('api', 'Date'),
         ];
     }

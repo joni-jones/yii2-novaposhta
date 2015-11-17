@@ -1,11 +1,14 @@
+filter:
+  excluded_paths:
+    - vendor/*
+    - tests/*
+
 checks:
   php:
     code_rating: true
     duplication: true
-
-filter:
-  excluded_paths:
-    - vendor/*
+    remove_extra_empty_lines: true
+    remove_trailing_whitespace: true
 
 before_commands:
   - "composer install --prefer-source"

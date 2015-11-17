@@ -1,8 +1,8 @@
 <?php
 namespace jones\novaposhta\registry;
 
-use Yii;
 use jones\novaposhta\Api;
+use Yii;
 
 /**
  * Class Order
@@ -138,6 +138,10 @@ class Order extends Api
      */
     public function validate(array $params)
     {
+        if (empty($params)) {
+            $this->addError(Yii::t('api', 'Request params should not be empty'));
+            return false;
+        }
         // validate redelivery type
         if (
             !empty($params['redelivery_type']) &&

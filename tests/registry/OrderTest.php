@@ -23,7 +23,24 @@ class OrderTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\registry\Order::validate()
+     * @covers \jones\novaposhta\registry\Order::validate
+     */
+    public function testValidateEmptyParams()
+    {
+        static::assertFalse($this->order->validate([]));
+        static::assertEquals('Request params should not be empty', $this->order->getErrors()[0]);
+    }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::validate
+     */
+    public function testValidate()
+    {
+        static::assertTrue($this->order->validate(['order_id' => '2432432423']));
+    }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::validate
      */
     public function testValidateEmptyRedeliveryPayer()
     {
@@ -35,7 +52,7 @@ class OrderTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\registry\Order::validate()
+     * @covers \jones\novaposhta\registry\Order::validate
      */
     public function testValidateIncorrectRedeliveryPayer()
     {
@@ -48,7 +65,7 @@ class OrderTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\registry\Order::validate()
+     * @covers \jones\novaposhta\registry\Order::validate
      */
     public function testValidatePalletRedelivery()
     {
@@ -101,7 +118,18 @@ class OrderTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\registry\Order::delete()
+     * @covers \jones\novaposhta\registry\Order::create
+     */
+    public function testCreateWithFailedValidation()
+    {
+        $this->request->expects(static::never())
+            ->method('build');
+        $result = $this->order->create([]);
+        static::assertFalse($result);
+    }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::delete
      */
     public function testDelete()
     {
@@ -112,5 +140,50 @@ class OrderTest extends TestCase
                 'close' => Order::STATUS_DELETED
             ]);
         static::assertTrue($this->order->delete($np_id));
+    }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::getPayTypes
+     */
+    public function testGetPayTypes()
+    {
+        $expected = [1, 2];
+        static::assertEquals($expected, array_keys(Order::getPayTypes()));
+    }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::getPayerTypes
+     */
+    public function testGetPayerTypes()
+    {
+        $expected = [Order::PAYER_RECEIVER, Order::PAYER_SENDER, Order::PAYER_OTHER];
+        static::assertEquals($expected, array_keys(Order::getPayerTypes()));
+    }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::getSaturdayDeliveryTypes
+     */
+    public function testGetSaturdayDeliveryTypes()
+    {
+        $expected = [0, 1];
+        static::assertEquals($expected, array_keys(Order::getSaturdayDeliveryTypes()));
+    }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::getRedeliveryTypes
+     */
+    public function testRedeliveryTypes()
+    {
+        $expected = [1, 2, 3, 4, 5, 6];
+        static::assertEquals($expected, array_keys(Order::getRedeliveryTypes()));
+    }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::getRedeliveryPayerTypes
+     */
+    public function testRedeliveryPayerTypes()
+    {
+        $expected = [1, 2];
+        static::assertEquals($expected, array_keys(Order::getRedeliveryPayerTypes()));
     }
 }

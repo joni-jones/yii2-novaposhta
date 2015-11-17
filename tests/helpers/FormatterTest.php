@@ -2,7 +2,6 @@
 namespace jones\novaposhta\tests\helpers;
 
 use jones\novaposhta\helpers\Formatter;
-use Yii;
 
 /**
  * Class FormatterTest
@@ -39,3 +38,4 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
         static::assertEquals('1,100', $this->formatter->formatWeight(1.1));
     }
 }
+
