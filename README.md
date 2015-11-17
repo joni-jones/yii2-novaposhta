@@ -10,3 +10,4 @@ Extension to work with Nova Poshta API
 [![Total Downloads](https://poser.pugx.org/joni-jones/yii2-novaposhta/downloads)](https://packagist.org/packages/joni-jones/yii2-novaposhta)
 [![Build Status](https://img.shields.io/travis/joni-jones/yii2-novaposhta.svg)](http://travis-ci.org/joni-jones/yii2-novaposhta)
 [![License](https://poser.pugx.org/joni-jones/yii2-novaposhta/license)](https://packagist.org/packages/joni-jones/yii2-novaposhta)
+[![Code Coverage](https://scrutinizer-ci.com/g/joni-jones/yii2-novaposhta/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/joni-jones/yii2-novaposhta/?branch=master)
