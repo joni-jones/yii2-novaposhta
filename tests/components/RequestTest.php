@@ -62,7 +62,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\components\Request::build()
+     * @covers \jones\novaposhta\components\Request::build
      */
     public function testBuild()
     {
@@ -76,7 +76,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\components\Request::build()
+     * @covers \jones\novaposhta\components\Request::build
      */
     public function testBuildWithFilter()
     {
@@ -92,7 +92,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\components\Request::execute()
+     * @covers \jones\novaposhta\components\Request::execute
      */
     public function testExecute()
     {
@@ -108,7 +108,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\components\Request::getBody()
+     * @covers \jones\novaposhta\components\Request::getBody
      */
     public function testGetEmptyBody()
     {
@@ -116,7 +116,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\components\Request::getBody()
+     * @covers \jones\novaposhta\components\Request::getBody
      */
     public function testGetBody()
     {
@@ -126,6 +126,42 @@ class RequestTest extends TestCase
         $this->request->build($params);
         $actual = $this->xmlToDomElement($this->request->getBody());
         static::assertEqualXMLStructure($expected, $actual, true);
+    }
+
+    /**
+     * @covers \jones\novaposhta\components\Request::createRequestDocument
+     */
+    public function testCreateRequestDocument()
+    {
+        $params = $this->getRequestDocument();
+        $this->request->build($params);
+        $document = simplexml_load_string($this->request->getBody());
+        static::assertInstanceOf(SimpleXMLElement::class, $document->auth);
+        static::assertEquals(self::API_KEY, (string) $document->auth);
+    }
+
+    /**
+     * @covers \jones\novaposhta\components\Request::appendFilter
+     */
+    public function testAppendFilter()
+    {
+        $params = $this->getRequestDocument();
+        $this->request->build($params, 'Kiev');
+        $document = simplexml_load_string($this->request->getBody());
+        static::assertInstanceOf(SimpleXMLElement::class, $document->filter);
+        static::assertEquals('Kiev', (string) $document->filter);
+    }
+
+    /**
+     * @covers \jones\novaposhta\components\Request::merge
+     */
+    public function testMerge()
+    {
+        $params = $this->getRequestDocument();
+        $this->request->build($params);
+        $document = simplexml_load_string($this->request->getBody());
+        static::assertInstanceOf(SimpleXMLElement::class, $document->order);
+        static::assertNotEmpty($document->order['rcpt_phone_num']);
     }
 
     /**

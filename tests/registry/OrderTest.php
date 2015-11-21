@@ -34,13 +34,24 @@ class OrderTest extends TestCase
     /**
      * @covers \jones\novaposhta\registry\Order::validate
      */
+    public function testFailedValidate()
+    {
+        $params = [
+            'redelivery_type' => Order::REDELIVERY_TYPE_PALLET
+        ];
+        static::assertFalse($this->order->validate($params));
+    }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::validate
+     */
     public function testValidate()
     {
         static::assertTrue($this->order->validate(['order_id' => '2432432423']));
     }
 
     /**
-     * @covers \jones\novaposhta\registry\Order::validate
+     * @covers \jones\novaposhta\registry\Order::validateRedeliveryType
      */
     public function testValidateEmptyRedeliveryPayer()
     {
@@ -52,7 +63,7 @@ class OrderTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\registry\Order::validate
+     * @covers \jones\novaposhta\registry\Order::validateRedeliveryType
      */
     public function testValidateIncorrectRedeliveryPayer()
     {
@@ -65,7 +76,7 @@ class OrderTest extends TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\registry\Order::validate
+     * @covers \jones\novaposhta\registry\Order::validateRedeliveryType
      */
     public function testValidatePalletRedelivery()
     {
@@ -75,6 +86,22 @@ class OrderTest extends TestCase
             'redelivery_payment_payer' => Order::REDELIVERY_PAYER_RECEIVER
         ]));
         static::assertEquals($message, $this->order->getErrors()[0]);
+    }
+
+    /**
+     * @covers \jones\novaposhta\registry\Order::validateRedeliveryType
+     */
+    public function testValidateRedeliveryType()
+    {
+        $params = [
+            'redelivery_type' => Order::REDELIVERY_TYPE_EXPRESS_CONSIGNMENT_CARRIER,
+            'redelivery_payment_payer' => Order::REDELIVERY_PAYER_SENDER
+        ];
+        static::assertTrue($this->order->validate($params));
+
+        $params['redelivery_type'] = Order::REDELIVERY_TYPE_PALLET;
+        $params['redelivery_payment_payer'] = Order::REDELIVERY_PAYER_SENDER;
+        static::assertTrue($this->order->validate($params));
     }
 
     /**

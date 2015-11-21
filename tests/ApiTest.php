@@ -3,6 +3,7 @@ namespace jones\novaposhta\tests;
 
 use jones\novaposhta\Api;
 use jones\novaposhta\components\RequestFactory;
+use SimpleXMLElement;
 use Yii;
 
 /**
@@ -109,10 +110,8 @@ class ApiTest extends TestCase
         /** @var \SimpleXMLElement $request */
         $request = $this->api->createRequestFromArray($params, 'order');
 
-        static::assertInstanceOf(\SimpleXMLElement::class, $request);
         static::assertNotEmpty($request->order);
         static::assertEquals($order_id, (string) $request->order['order_id']);
-        static::assertInstanceOf(\SimpleXMLElement::class, $request->order->details);
         static::assertEquals($description, (string) $request->order->details['description']);
     }
 
@@ -125,5 +124,37 @@ class ApiTest extends TestCase
         $request = $this->api->createRequest($orderId, 'order');
         static::assertNotEmpty($request->order);
         static::assertEquals($orderId, (string) $request->order);
+    }
+
+    /**
+     * @covers \jones\novaposhta\Api::createDocument
+     */
+    public function testCreateDocument()
+    {
+        $error = 'Order id should not be empty';
+        $request = $this->api->createRequest($error, 'error');
+        static::assertEquals($error, (string) $request->error);
+    }
+
+    /**
+     * @covers \jones\novaposhta\Api::appendAttributes
+     */
+    public function testAppendAttributes()
+    {
+        $params = [
+            'order_id' => '201511211056',
+            'details' => [
+                'description' => 'Order description',
+                'comments' => [
+                    ['sender' => 'Glass']
+                ]
+            ]
+        ];
+
+        $request = $this->api->createRequestFromArray($params, 'order');
+        static::assertInstanceOf(SimpleXMLElement::class, $request);
+        static::assertInstanceOf(SimpleXMLElement::class, $request->order->details);
+        static::assertInstanceOf(SimpleXMLElement::class, $request->order->details->comments);
+        static::assertInstanceOf(SimpleXMLElement::class, $request->order->details->comments->sender);
     }
 }

@@ -140,4 +140,35 @@ class EstimationTest extends TestCase
             ['14.11.2015', '17.11.2015'],
         ];
     }
+
+    /**
+     * @covers \jones\novaposhta\Api::execute
+     */
+    public function testExecute()
+    {
+        /** @var \jones\novaposhta\models\CountPrice $countPrice */
+        $countPrice = Yii::createObject(CountPrice::class);
+        $countPrice->setAttributes([
+            'senderCity' => 'Odessa',
+            'recipientCity' => 'Kiev',
+            'mass' => 1,
+            'height' => 60,
+            'width' => 120,
+            'depth' => 40,
+            'publicPrice' => 825.55,
+            'postpay_sum' => 27,
+            'date' => '21.11.2015'
+        ], false);
+
+        $this->request->expects(static::once())
+            ->method('execute')
+            ->willReturn([
+                'date' => '25.11.2015',
+                'cost' => 27
+            ]);
+
+        $result = $this->estimation->getPriceWithDate($countPrice);
+        static::assertNotEmpty($result['date']);
+        static::assertNotEmpty($result['cost']);
+    }
 }

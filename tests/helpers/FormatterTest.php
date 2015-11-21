@@ -20,7 +20,7 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\helpers\Formatter::formatPrice()
+     * @covers \jones\novaposhta\helpers\Formatter::formatPrice
      */
     public function testFormatPrice()
     {
@@ -30,12 +30,22 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \jones\novaposhta\helpers\Formatter::formatWeight()
+     * @covers \jones\novaposhta\helpers\Formatter::formatWeight
      */
     public function testFormatWeight()
     {
         static::assertEquals('0,001', $this->formatter->formatWeight(.001));
         static::assertEquals('1,100', $this->formatter->formatWeight(1.1));
+    }
+
+    /**
+     * @covers \jones\novaposhta\helpers\Formatter::format
+     */
+    public function testFormat()
+    {
+        static::assertEquals('0,01', $this->formatter->formatPrice(.0134));
+        static::assertEquals('-1,12', $this->formatter->formatPrice(-1.12));
+        static::assertEquals('0,013', $this->formatter->formatWeight(.0134));
     }
 }
 
