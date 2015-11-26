@@ -16,13 +16,6 @@
     <filter>
         <whitelist>
             <directory suffix=".php">src</directory>
-            <exclude>
-                <directory suffix=".php">src/messages</directory>
-                <directory suffix=".php">src/models</directory>
-            </exclude>
         </whitelist>
     </filter>
-    <logging>
-        <log type="coverage-html" target="build/coverage" charset="UTF-8" yui="true" highlight="true"/>
-    </logging>
 </phpunit>
