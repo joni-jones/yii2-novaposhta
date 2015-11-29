@@ -2,7 +2,6 @@
 namespace jones\novaposhta\converters;
 
 use SimpleXMLElement;
-use yii\helpers\Json;
 
 /**
  * Class XmlConverter
@@ -28,7 +27,8 @@ class XmlConverter implements ConverterInterface
     public function decode($data)
     {
         $document = simplexml_load_string($data);
-        return Json::decode(Json::encode((array) $document), true);
+        $data = json_encode((array) $document);
+        return json_decode($data, true);
     }
 
     /**
@@ -36,7 +36,15 @@ class XmlConverter implements ConverterInterface
      */
     public function getContentType()
     {
-        return self::getContentType();
+        return self::CONTENT_TYPE;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getType()
+    {
+        return ConverterInterface::FORMAT_XML;
     }
 
     /**
@@ -66,4 +74,3 @@ class XmlConverter implements ConverterInterface
         }
     }
 }
-

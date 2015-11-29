@@ -1,6 +1,6 @@
 <?php
-
 namespace jones\novaposhta\converters;
+
 use yii\base\NotSupportedException;
 
 /**
@@ -9,22 +9,18 @@ use yii\base\NotSupportedException;
  */
 class ConverterFactory
 {
-    const FORMAT_JSON = 'json';
-
-    const FORMAT_XML = 'xml';
-
     /**
      * Create format converter
      * @param string $format
      * @return JsonConverter|XmlConverter
      * @throws NotSupportedException
      */
-    public function create($format = self::FORMAT_XML)
+    public function create($format = ConverterInterface::FORMAT_XML)
     {
         switch ($format) {
-            case self::FORMAT_XML:
+            case ConverterInterface::FORMAT_XML:
                 return new XmlConverter();
-            case self::FORMAT_JSON:
+            case ConverterInterface::FORMAT_JSON:
                 return new JsonConverter();
             default:
                 throw new NotSupportedException('The specified convert format not supported');

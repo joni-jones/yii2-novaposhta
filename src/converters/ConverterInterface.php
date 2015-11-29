@@ -7,17 +7,20 @@ namespace jones\novaposhta\converters;
  */
 interface ConverterInterface
 {
+    const FORMAT_JSON = 'json';
+
+    const FORMAT_XML = 'xml';
 
     /**
      * Convert array to specified format
      * @param array $params
-     * @return mixed
+     * @return string
      */
     public function encode(array $params);
 
     /**
      * Decode data to array
-     * @param $data
+     * @param string $data
      * @return array
      */
     public function decode($data);
@@ -27,4 +30,10 @@ interface ConverterInterface
      * @return string
      */
     public function getContentType();
+
+    /**
+     * Get type of concrete format implementation
+     * @return string
+     */
+    public function getType();
 }
