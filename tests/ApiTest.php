@@ -3,11 +3,9 @@ namespace jones\novaposhta\tests;
 
 use jones\novaposhta\Api;
 use jones\novaposhta\request\RequestFactory;
-use yii\base\Model;
 
 /**
  * Class ApiTest
- * @package jones\novaposhta\tests
  */
 class ApiTest extends TestCase
 {
@@ -16,19 +14,10 @@ class ApiTest extends TestCase
      */
     private $api;
 
-    /**
-     * @var \yii\base\Model
-     */
-    private $model;
-
     protected function setUp()
     {
         $requestFactory = $this->getRequestFactory();
-        $this->model = $this->getMockBuilder(Model::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->api = new Api($this->model, $requestFactory);
+        $this->api = new Api($requestFactory);
     }
 
     /**
@@ -37,7 +26,6 @@ class ApiTest extends TestCase
     public function testApiConstructor()
     {
         $this->invokeConstructor(Api::class, [
-            new Model(),
             new RequestFactory()
         ]);
     }

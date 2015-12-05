@@ -2,10 +2,9 @@
 namespace jones\novaposhta\http;
 
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ClientException as GuzzleClientException;
 use jones\novaposhta\request\RequestInterface;
 use Yii;
-use jones\novaposhta\http\ClientException as HttpClientException;
 
 /**
  * Class Client
@@ -46,12 +45,12 @@ class Client implements ClientInterface
         ];
         try {
             $response = $this->client->post($url, $options);
-        } catch (ClientException $e) {
+        } catch (GuzzleClientException $e) {
             Yii::error($e->getRequest());
             if ($e->hasResponse()) {
                 Yii::error($e->getResponse());
             }
-            throw new HttpClientException($e);
+            throw new ClientException($e);
         }
         Yii::trace($response);
         return $response->getBody();

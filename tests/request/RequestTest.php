@@ -83,6 +83,8 @@ class RequestTest extends TestCase
         static::assertTrue(is_array($response));
         static::assertNotEmpty($response['success']);
         static::assertNotEmpty($response['data']);
+        static::assertEquals(2, count($response['data']['item']));
+        static::assertNotEmpty($response['data']['item'][0]['Description']);
         static::assertTrue(isset($response['errors']));
         static::assertTrue(isset($response['warnings']));
         static::assertTrue(isset($response['info']));

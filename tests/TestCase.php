@@ -45,7 +45,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Create mock for request and get request factory mock
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \jones\novaposhta\request\RequestFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getRequestFactory()
     {

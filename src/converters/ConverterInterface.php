@@ -14,7 +14,7 @@ interface ConverterInterface
     /**
      * Convert array to specified format
      * @param array $params
-     * @return string
+     * @return string|false
      */
     public function encode(array $params);
 
