@@ -34,7 +34,7 @@ class XmlConverterTest extends \PHPUnit_Framework_TestCase
      * @param array $expected
      * @param string $data
      * @covers \jones\novaposhta\converters\XmlConverter::decode
-     * @dataProvider requestDataProvider
+     * @dataProvider responseDataProvider
      */
     public function testDecode(array $expected, $data)
     {
@@ -75,14 +75,50 @@ class XmlConverterTest extends \PHPUnit_Framework_TestCase
     public function requestDataProvider()
     {
         return [
-            [[
-                'apiKey' => 'ieu2iqw4o',
-                'modelName' => 'Address',
-                'calledMethod' => 'getCities',
-                'methodProperties' => [
-                    'FindByString' => 'Kiev'
-                ]
-            ], file_get_contents(__DIR__ . '/../data/request.xml')]
+            [
+                [
+                    'apiKey' => 'ieu2iqw4o',
+                    'modelName' => 'Address',
+                    'calledMethod' => 'getCities',
+                    'methodProperties' => [
+                        'FindByString' => 'Kiev'
+                    ]
+                ],
+                file_get_contents(__DIR__ . '/../data/request.xml')
+            ],
+        ];
+    }
+
+    /**
+     * Get data for response decoding testing
+     * @return array
+     */
+    public function responseDataProvider()
+    {
+        return [
+            [
+                [
+                    'success' => 'true',
+                    'data' => [
+                        [
+                            'Description' => 'Kiev',
+                            'Conglomerates' => [
+                                '2f592fe1dcac', '2dsaxcw2e3dc'
+                            ]
+                        ],
+                        [
+                            'Description' => 'Odessa',
+                            'Conglomerates' => [
+                                'nv423dfv3sq1', 'mb3jrm55scv2'
+                            ]
+                        ]
+                    ],
+                    'errors' => [],
+                    'warnings' => [],
+                    'info' => []
+                ],
+                file_get_contents(__DIR__ . '/../data/response.xml')
+            ]
         ];
     }
 

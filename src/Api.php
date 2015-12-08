@@ -92,11 +92,11 @@ class Api extends Model
             return false;
         }
         if (!(boolean) $response['success']) {
-            $this->addError($method, (string) $response['errors']);
+            $this->addErrors([$method => $response['errors']]);
             return false;
         }
-        $this->logWarnings((string) $response['warnings']);
-        $this->logInfo((string) $response['info']);
+        $this->logWarnings($response['warnings']);
+        $this->logInfo($response['info']);
         return (array) $response['data'];
     }
 

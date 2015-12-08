@@ -5,7 +5,6 @@ use jones\novaposhta\converters\JsonConverter;
 
 /**
  * Class JsonConverterTest
- * @package jones\novaposhta\tests\converters
  */
 class JsonConverterTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,13 +33,14 @@ class JsonConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $expected
+     * @param string $data
      * @covers \jones\novaposhta\converters\JsonConverter::decode
+     * @dataProvider responseDataProvider
      */
-    public function testDecode()
+    public function testDecode(array $expected, $data)
     {
-        $data = '{"apiKey":"ui6dsf21","modelName":"Address","calledMethod":"getCities","methodProperties":
-            {"FindByString":"Kiev"}}';
-        static::assertEquals(json_decode($data, true), $this->converter->decode($data));
+        static::assertEquals($expected, $this->converter->decode($data));
     }
 
     /**
@@ -57,5 +57,38 @@ class JsonConverterTest extends \PHPUnit_Framework_TestCase
     public function testGetType()
     {
         static::assertEquals('json', $this->converter->getType());
+    }
+
+    /**
+     * Get items for response decoding testings
+     * @return array
+     */
+    public function responseDataProvider()
+    {
+        return [
+            [
+                [
+                    'success' => true,
+                    'data' => [
+                        [
+                            'Description' => 'Kiev',
+                            'Conglomerates' => [
+                                '2f592fe1dcac', '2dsaxcw2e3dc'
+                            ]
+                        ],
+                        [
+                            'Description' => 'Odessa',
+                            'Conglomerates' => [
+                                'nv423dfv3sq1', 'mb3jrm55scv2'
+                            ]
+                        ]
+                    ],
+                    'errors' => [],
+                    'warnings' => [],
+                    'info' => []
+                ],
+                file_get_contents(__DIR__ . '/../data/response.json')
+            ]
+        ];
     }
 }

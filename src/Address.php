@@ -1,6 +1,8 @@
 <?php
 namespace jones\novaposhta;
 
+use Yii;
+
 /**
  * Class Address
  * This model contain methods to work with addresses
@@ -14,6 +16,8 @@ final class Address extends Api
     const SCENARIO_DELETE = 'delete';
 
     const SCENARIO_WAREHOUSE = 'warehouse';
+
+    const SCENARIO_GET_CITIES = 'get_cities';
 
     /**
      * Filter for request
@@ -63,7 +67,21 @@ final class Address extends Api
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_DELETE] = ['Ref'];
         $scenarios[self::SCENARIO_WAREHOUSE] = ['CityRef', 'FindByString'];
+        $scenarios[self::SCENARIO_GET_CITIES] = ['Ref', 'FindByString'];
         return $scenarios;
+    }
+
+    /**
+     * @inheritdoc
+     * @codeCoverageIgnore
+     */
+    public function attributeLabels()
+    {
+        return [
+            'FindByString' =>  Yii::t('api', 'Find By String'),
+            'Ref' => Yii::t('api', 'Ref'),
+            'CityRef' => Yii::t('api', 'City Ref'),
+        ];
     }
 
     /**
@@ -73,7 +91,7 @@ final class Address extends Api
      */
     public function getCities($filter = '')
     {
-        $this->FindByString = $filter;
+        $this->addFilter($filter);
         return $this->call('getCities');
     }
 
@@ -95,8 +113,19 @@ final class Address extends Api
     public function getWarehouses($street = '')
     {
         $this->setScenario(self::SCENARIO_WAREHOUSE);
-        $this->FindByString = $street;
+        $this->addFilter($street);
         $this->enableValidation();
         return $this->call('getWarehouses');
+    }
+
+    /**
+     * Add filter
+     * @param string $filter
+     */
+    protected function addFilter($filter)
+    {
+        if (!empty($filter)) {
+            $this->FindByString = $filter;
+        }
     }
 }

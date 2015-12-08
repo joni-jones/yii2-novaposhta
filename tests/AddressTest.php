@@ -28,17 +28,15 @@ class AddressTest extends TestCase
             ->willReturn([
                 'success' => 'true',
                 'data' => [
-                    'item' => [
-                        ['Description' => 'Kievskaya', 'Ref' => '000c2965ae0e'],
-                        ['Description' => 'Odesskaya', 'Ref' => '8ejf4vb2c0e6'],
-                    ]
+                    ['Description' => 'Kievskaya', 'Ref' => '000c2965ae0e'],
+                    ['Description' => 'Odesskaya', 'Ref' => '8ejf4vb2c0e6'],
                 ],
                 'warnings' => '',
                 'info' => 'Api request info'
             ]);
         $response = $this->model->getAreas();
-        static::assertEquals(2, count($response['item']));
-        static::assertEquals('8ejf4vb2c0e6', $response['item'][1]['Ref']);
+        static::assertEquals(2, count($response));
+        static::assertEquals('8ejf4vb2c0e6', $response[1]['Ref']);
     }
 
     /**
@@ -51,12 +49,10 @@ class AddressTest extends TestCase
             ->willReturn([
                 'success' => true,
                 'data' => [
-                    'item' => [
-                        ['Description' => 'Kievskaya', 'Ref' => '000c2965ae0e', 'AreasCenter' => '001a92567626']
-                    ]
+                    ['Description' => 'Kievskaya', 'Ref' => '000c2965ae0e', 'AreasCenter' => '001a92567626']
                 ],
-                'warnings' => '',
-                'info' => ''
+                'warnings' => [],
+                'info' => []
             ]);
         $filter = 'Kiev';
         $response = $this->model->getCities($filter);
@@ -103,11 +99,9 @@ class AddressTest extends TestCase
             ->willReturn([
                 'success' => false,
                 'data' => [
-                    'item' => [
-                        'Ref' => '005056801329'
-                    ]
+                    'Ref' => '005056801329'
                 ],
-                'errors' => $message
+                'errors' => [$message]
             ]);
         $this->model->Ref = $id;
         static::assertFalse($this->model->delete());
@@ -125,9 +119,7 @@ class AddressTest extends TestCase
             ->willReturn([
                 'success' => true,
                 'data' => [
-                    'item' => [
-                        'Ref' => $id
-                    ]
+                    'Ref' => $id
                 ],
                 'warnings' => '',
                 'info' => '',
@@ -147,9 +139,7 @@ class AddressTest extends TestCase
             ->willReturn([
                 'success' => true,
                 'data' => [
-                    'item' => [
-                        'Ref' => $id
-                    ]
+                    'Ref' => $id
                 ],
                 'warnings' => 'Contractor address can\'t be deleted',
                 'info' => '',
@@ -164,7 +154,16 @@ class AddressTest extends TestCase
     public function testGetWarehouses()
     {
         $this->request->expects(static::once())
-            ->method('execute');
+            ->method('execute')
+            ->willReturn([
+                'success' => true,
+                'data' => [
+                    'Description' => 'Відділення №1',
+                    'DescriptionRu' => 'Отделение №1',
+                ],
+                'info' => '',
+                'warnings' => ''
+            ]);
         /**
          * @TODO implement logic for asserts
          */

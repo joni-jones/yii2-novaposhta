@@ -28,7 +28,9 @@ class XmlConverter implements ConverterInterface
     {
         $document = simplexml_load_string($data);
         $data = json_encode((array) $document);
-        return json_decode($data, true);
+        $items = json_decode($data, true);
+        return $this->removeItemKey($items);
+        return $items;
     }
 
     /**
@@ -72,5 +74,27 @@ class XmlConverter implements ConverterInterface
                 $node->addChild($key, $item);
             }
         }
+    }
+
+    /**
+     * Recursively remove `item` key from array,
+     * this method needed to create compatible data with other converters
+     * @param array $data
+     * @return array
+     */
+    private function removeItemKey(array $data)
+    {
+        foreach ($data as $key => &$value) {
+            if (is_array($value)) {
+                $value = $this->removeItemKey($value);
+            }
+            // set current value instead array[key]
+            // this allow to remove `item` key without data losing
+            if ($key === 'item') {
+                $data = $value;
+            }
+        }
+        unset($value);
+        return $data;
     }
 }

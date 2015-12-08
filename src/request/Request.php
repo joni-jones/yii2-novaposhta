@@ -42,6 +42,7 @@ class Request implements RequestInterface
      * Init request object
      * @param ConverterInterface $converter
      * @param ClientFactory $factory
+     * @param string $apiKey
      */
     public function __construct(ConverterInterface $converter, ClientFactory $factory, $apiKey)
     {

@@ -1,0 +1,22 @@
+{
+    "success": true,
+    "data": [
+        {
+            "Description": "Kiev",
+            "Conglomerates": [
+                "2f592fe1dcac",
+                "2dsaxcw2e3dc"
+            ]
+        },
+        {
+            "Description": "Odessa",
+            "Conglomerates": [
+                "nv423dfv3sq1",
+                "mb3jrm55scv2"
+            ]
+        }
+    ],
+    "errors": [],
+    "warnings": [],
+    "info": []
+}

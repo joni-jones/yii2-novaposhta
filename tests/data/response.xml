@@ -4,10 +4,6 @@
   <data>
     <item>
       <Description>Kiev</Description>
-      <Ref>001a92567626</Ref>
-      <Delivery1>1</Delivery1>
-      <Delivery2>1</Delivery2>
-      <Area>000c2965ae0e</Area>
       <Conglomerates>
         <item>2f592fe1dcac</item>
         <item>2dsaxcw2e3dc</item>
@@ -15,10 +11,6 @@
     </item>
     <item>
       <Description>Odessa</Description>
-      <Ref>001a2ds76mc</Ref>
-      <Delivery1>1</Delivery1>
-      <Delivery2>1</Delivery2>
-      <Area>119dfk4fcv</Area>
       <Conglomerates>
         <item>nv423dfv3sq1</item>
         <item>mb3jrm55scv2</item>

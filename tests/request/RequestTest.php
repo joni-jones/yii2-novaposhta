@@ -83,8 +83,8 @@ class RequestTest extends TestCase
         static::assertTrue(is_array($response));
         static::assertNotEmpty($response['success']);
         static::assertNotEmpty($response['data']);
-        static::assertEquals(2, count($response['data']['item']));
-        static::assertNotEmpty($response['data']['item'][0]['Description']);
+        static::assertEquals(2, count($response['data']));
+        static::assertNotEmpty($response['data'][0]['Description']);
         static::assertTrue(isset($response['errors']));
         static::assertTrue(isset($response['warnings']));
         static::assertTrue(isset($response['info']));
@@ -141,9 +141,7 @@ class RequestTest extends TestCase
             ->willReturn(json_encode([
                 'success' => 'true',
                 'data' => [
-                    'item' => [
-                        'Description' => 'Kiev',
-                    ],
+                    ['Description' => 'Kiev'],
                 ],
                 'errors',
                 'warnings',

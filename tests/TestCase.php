@@ -32,6 +32,17 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
                 'id' => 'testapp',
                 'basePath' => __DIR__,
                 'vendorPath' => __DIR__ . '/../vendor',
+                'components' => [
+                    'i18n' => [
+                        'translations' => [
+                            '*' => [
+                                'class' => 'yii\i18n\PhpMessageSource',
+                                'basePath' => '@novaposhta/messages',
+                                'sourceLanguage' => 'en',
+                            ],
+                        ]
+                    ],
+                ]
             ],
             $config
         );
