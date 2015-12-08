@@ -54,6 +54,23 @@ class Api extends Model
     }
 
     /**
+     * Enable model properties validation
+     */
+    protected function enableValidation()
+    {
+        $this->validationEnabled = true;
+    }
+
+    /**
+     * Check if model validation enabled
+     * @return bool
+     */
+    protected function isValidationEnabled()
+    {
+        return (boolean) $this->validationEnabled;
+    }
+
+    /**
      * Call api method
      * @param string $method name of api method
      * @return array|bool
@@ -61,7 +78,7 @@ class Api extends Model
      */
     protected function call($method)
     {
-        if ($this->validationEnabled && !$this->validate()) {
+        if ($this->isValidationEnabled() && !$this->validate()) {
             return false;
         }
         $request = $this->requestFactory->create();
@@ -78,12 +95,30 @@ class Api extends Model
             $this->addError($method, (string) $response['errors']);
             return false;
         }
-        if (!empty($response['warnings'])) {
-            Yii::warning((string) $response['warnings']);
-        }
-        if (!empty($response['info'])) {
-            Yii::info($response['info']);
-        }
+        $this->logWarnings((string) $response['warnings']);
+        $this->logInfo((string) $response['info']);
         return (array) $response['data'];
+    }
+
+    /**
+     * Log response warnings
+     * @param string $warnings
+     */
+    private function logWarnings($warnings)
+    {
+        if (!empty($warnings)) {
+            Yii::warning($warnings);
+        }
+    }
+
+    /**
+     * Log response info
+     * @param string $info
+     */
+    private function logInfo($info)
+    {
+        if (!empty($info)) {
+            Yii::info($info);
+        }
     }
 }

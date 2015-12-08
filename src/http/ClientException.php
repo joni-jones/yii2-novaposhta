@@ -7,4 +7,4 @@ use yii\base\Exception;
  * Class ClientException
  * @package jones\novaposhta\http
  */
-class ClientException extends Exception{}
+class ClientException extends Exception {}

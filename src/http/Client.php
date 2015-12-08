@@ -53,6 +53,6 @@ class Client implements ClientInterface
             throw new ClientException($e);
         }
         Yii::trace($response);
-        return $response->getBody();
+        return (string) $response->getBody();
     }
 }
