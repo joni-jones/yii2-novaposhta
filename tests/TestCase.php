@@ -9,7 +9,6 @@ use yii\helpers\ArrayHelper;
 
 /**
  * Class TestCase
- * @package jones\novaposhta\tests
  */
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {

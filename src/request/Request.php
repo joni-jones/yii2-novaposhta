@@ -6,7 +6,6 @@ use jones\novaposhta\http\ClientFactory;
 
 /**
  * Class Request
- * @package jones\novaposhta\request
  */
 class Request implements RequestInterface
 {
@@ -60,8 +59,10 @@ class Request implements RequestInterface
             'apiKey' => $this->apiKey,
             'modelName' => $modelName,
             'calledMethod' => $calledMethod,
-            'methodProperties' => $params
         ];
+        if (!empty($params)) {
+            $data['methodProperties'] = $params;
+        }
         $this->body = $this->converter->encode($data);
         return $this;
     }

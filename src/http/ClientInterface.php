@@ -5,7 +5,6 @@ use jones\novaposhta\request\RequestInterface;
 
 /**
  * Interface ClientInterface
- * @package jones\novaposhta\http
  */
 interface ClientInterface
 {

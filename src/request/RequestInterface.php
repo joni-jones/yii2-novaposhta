@@ -3,7 +3,6 @@ namespace jones\novaposhta\request;
 
 /**
  * Interface RequestInterface
- * @package jones\novaposhta\request
  */
 interface RequestInterface
 {

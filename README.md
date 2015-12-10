@@ -74,3 +74,11 @@ $model->getErrors();
     $addressModel->CityRef = 'df1j2cmf5d';  // CityRef is required parameter
     $warehouses = $addressModel->getWarehouses('Броварський'); // Street name is additional parameter
     ```
+ - getStreet
+    ```php
+    $streets = $addressModel->getStreet('city ref', 'street name');
+    ```
+ - getWarehouseTypes
+    ```php
+    $types = $addressModel->getWarehouseTypes();
+    ```

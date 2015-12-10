@@ -8,7 +8,6 @@ use Yii;
 
 /**
  * Class Client
- * @package jones\novaposhta\http
  */
 class Client implements ClientInterface
 {

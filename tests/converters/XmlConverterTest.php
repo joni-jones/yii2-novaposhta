@@ -34,12 +34,23 @@ class XmlConverterTest extends \PHPUnit_Framework_TestCase
      * @param array $expected
      * @param string $data
      * @covers \jones\novaposhta\converters\XmlConverter::decode
-     * @dataProvider responseDataProvider
+     * @dataProvider requestDataProvider
      */
     public function testDecode(array $expected, $data)
     {
         $actual = $this->converter->decode($data);
         static::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @param array $expected
+     * @param string $data
+     * @covers \jones\novaposhta\converters\XmlConverter::removeItemKey
+     * @dataProvider responseDataProvider
+     */
+    public function testRemoveItemKey(array $expected, $data)
+    {
+       static::assertEquals($expected, $this->converter->decode($data));
     }
 
     /**

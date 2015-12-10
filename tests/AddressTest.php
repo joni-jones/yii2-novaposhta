@@ -75,6 +75,16 @@ class AddressTest extends TestCase
     }
 
     /**
+     * @covers \jones\novaposhta\Api::enableValidation
+     */
+    public function testEnableValidation()
+    {
+        $this->model->Ref = '100c9b0023m';
+        $this->model->delete();
+        static::assertTrue($this->model->isAttributeRequired('Ref'));
+    }
+
+    /**
      * @covers \jones\novaposhta\Address::call
      */
     public function testDeleteWithFailedValidation()
@@ -164,11 +174,56 @@ class AddressTest extends TestCase
                 'info' => '',
                 'warnings' => ''
             ]);
-        /**
-         * @TODO implement logic for asserts
-         */
 
         $this->model->CityRef = '001a92567626';
         $this->model->getWarehouses();
+    }
+
+    /**
+     * @covers \jones\novaposhta\Address::getStreet
+     */
+    public function testGetStreet()
+    {
+        $this->request->expects(static::once())
+            ->method('execute')
+            ->willReturn([
+                'success' => true,
+                'data' => [],
+                'info' => '',
+                'warnings' => ''
+            ]);
+        static::assertTrue(is_array($this->model->getStreet('001a92567626', '1-')));
+    }
+
+    public function testGetWarehouseTypes()
+    {
+        $this->request->expects(static::once())
+            ->method('execute')
+            ->willReturn([
+                'success' => true,
+                'data' => [
+                    ['Description' => 'Parcel Shop'],
+                    ['Description' => 'Поштовевідділення'],
+                    ['Description' => 'Поштоматприватбанку'],
+                    ['Description' => 'Вантажневідділення'],
+                    ['Description' => 'Поштомат'],
+                ],
+                'info' => '',
+                'warnings' => ''
+            ]);
+
+        $response = $this->model->getWarehouseTypes();
+        static::assertTrue(is_array($response));
+        static::assertEquals(5, count($response));
+    }
+
+    /**
+     * @covers \jones\novaposhta\Address::addFilter
+     */
+    public function testAddFilter()
+    {
+        $street = 'Lugova';
+        $this->model->getWarehouses($street);
+        static::assertEquals($street, $this->model->FindByString);
     }
 }

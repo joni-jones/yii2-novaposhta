@@ -14,14 +14,13 @@ use Yii;
 
 /**
  * Class ClientTest
- * @package jones\novaposhta\tests\http
  */
 class ClientTest extends TestCase
 {
     /**
      * @var \jones\novaposhta\http\Client
      */
-    private $httpClient;
+    private $client;
 
     /**
      * @var \GuzzleHttp\Client|\PHPUnit_Framework_MockObject_MockObject
@@ -53,7 +52,7 @@ class ClientTest extends TestCase
             ->setMethods(['getBody'])
             ->getMock();
 
-        $this->httpClient = Yii::createObject(Client::class, [
+        $this->client = Yii::createObject(Client::class, [
             $this->guzzleClient
         ]);
     }
@@ -87,7 +86,7 @@ class ClientTest extends TestCase
             ->method('getBody')
             ->willReturn($this->getResponse());
 
-        $response = $this->httpClient->execute($this->request, ConverterInterface::FORMAT_JSON, Request::API_URL_JSON);
+        $response = $this->client->execute($this->request, ConverterInterface::FORMAT_JSON, Request::API_URL_JSON);
         $converter = new XmlConverter();
         $actual = $converter->decode($response);
         static::assertNotEmpty($actual['success']);
@@ -115,7 +114,7 @@ class ClientTest extends TestCase
         $this->response->expects(static::never())
             ->method('getBody');
 
-        $this->httpClient->execute($this->request, ConverterInterface::FORMAT_JSON, Request::API_URL_JSON);
+        $this->client->execute($this->request, ConverterInterface::FORMAT_JSON, Request::API_URL_JSON);
     }
 
     /**
@@ -139,7 +138,7 @@ class ClientTest extends TestCase
         $this->response->expects(static::never())
             ->method('getBody');
 
-        $this->httpClient->execute($this->request, ConverterInterface::FORMAT_XML, Request::API_URL_XML);
+        $this->client->execute($this->request, ConverterInterface::FORMAT_XML, Request::API_URL_XML);
     }
 
     /**

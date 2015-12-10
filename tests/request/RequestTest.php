@@ -1,16 +1,14 @@
 <?php
 namespace jones\novaposhta\tests\request;
 
-use jones\novaposhta\converters\ConverterInterface;
 use jones\novaposhta\converters\JsonConverter;
+use jones\novaposhta\converters\XmlConverter;
 use jones\novaposhta\http\Client;
 use jones\novaposhta\http\ClientFactory;
 use jones\novaposhta\request\Request;
 use jones\novaposhta\tests\TestCase;
 use SimpleXMLElement;
 use Yii;
-use jones\novaposhta\converters\ConverterFactory;
-use jones\novaposhta\converters\XmlConverter;
 
 /**
  * Class RequestTest
@@ -18,17 +16,20 @@ use jones\novaposhta\converters\XmlConverter;
  */
 class RequestTest extends TestCase
 {
-    const API_KEY = 'ieu2iqw4o';
+    /**
+     * @var \jones\novaposhta\converters\XmlConverter|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $converter;
 
     /**
      * @var \jones\novaposhta\http\Client|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $httpClient;
+    protected $httpClient;
 
     /**
      * @var \jones\novaposhta\http\ClientFactory|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $httpClientFactory;
+    protected $httpClientFactory;
 
     protected function setUp()
     {
@@ -66,6 +67,18 @@ class RequestTest extends TestCase
         ];
 
         $this->request->build('Address', 'getCities', $params);
+        $actual = $this->xmlToDomElement($this->request->getBody());
+        static::assertEqualXMLStructure($expected, $actual, true);
+    }
+
+    /**
+     * @covers \jones\novaposhta\request\Request::build
+     */
+    public function testBuildWithoutFilter()
+    {
+        $expected = $this->xmlToDomElement(file_get_contents(__DIR__ . '/../data/request_without_filter.xml'));
+
+        $this->request->build('Address', 'getCities', []);
         $actual = $this->xmlToDomElement($this->request->getBody());
         static::assertEqualXMLStructure($expected, $actual, true);
     }

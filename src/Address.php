@@ -8,6 +8,7 @@ use Yii;
  * This model contain methods to work with addresses
  *
  * @method array getAreas()
+ * @method array getWarehouseTypes()
  */
 final class Address extends Api
 {
@@ -42,7 +43,7 @@ final class Address extends Api
      * @var array
      */
     protected $methods = [
-        'getAreas'
+        'getAreas', 'getWarehouseTypes'
     ];
 
     /**
@@ -119,13 +120,26 @@ final class Address extends Api
     }
 
     /**
+     * Get city streets
+     * @param string $cityRef
+     * @param string $title
+     * @return array|bool
+     */
+    public function getStreet($cityRef, $title = '')
+    {
+        $this->setScenario(self::SCENARIO_WAREHOUSE);
+        $this->CityRef = $cityRef;
+        $this->addFilter($title);
+        $this->enableValidation();
+        return $this->call('getStreet');
+    }
+
+    /**
      * Add filter
      * @param string $filter
      */
     protected function addFilter($filter)
     {
-        if (!empty($filter)) {
-            $this->FindByString = $filter;
-        }
+        $this->FindByString = $filter;
     }
 }

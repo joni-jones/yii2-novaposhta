@@ -8,7 +8,6 @@ use yii\base\Model;
 
 /**
  * Class Api
- * @package jones\novaposhta
  */
 class Api extends Model
 {

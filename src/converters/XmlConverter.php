@@ -30,7 +30,6 @@ class XmlConverter implements ConverterInterface
         $data = json_encode((array) $document);
         $items = json_decode($data, true);
         return $this->removeItemKey($items);
-        return $items;
     }
 
     /**
