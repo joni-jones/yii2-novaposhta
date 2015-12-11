@@ -20,6 +20,8 @@ final class Address extends Api
 
     const SCENARIO_GET_CITIES = 'get_cities';
 
+    const SCENARIO_SAVE = 'save';
+
     /**
      * Filter for request
      * @var string
@@ -39,6 +41,36 @@ final class Address extends Api
     public $CityRef;
 
     /**
+     * Contractor id
+     * @var string
+     */
+    public $CounterpartyRef;
+
+    /**
+     * Number of building
+     * @var int
+     */
+    public $BuildingNumber;
+
+    /**
+     * Number of flat
+     * @var int
+     */
+    public $Flat;
+
+    /**
+     * Additional comment
+     * @var string
+     */
+    public $Note;
+
+    /**
+     * Street id
+     * @var string
+     */
+    public $StreetRef;
+
+    /**
      * List of available address api methods
      * @var array
      */
@@ -53,9 +85,12 @@ final class Address extends Api
     public function rules()
     {
         return [
-            [['FindByString', 'Ref', 'CityRef'], 'string'],
+            [['FindByString', 'Ref', 'CityRef', 'CounterpartyRef', 'BuildingNumber', 'Note', 'StreetRef'], 'string'],
+            [['Flat'], 'integer'],
             ['Ref', 'required', 'on' => self::SCENARIO_DELETE],
             ['CityRef', 'required', 'on' => self::SCENARIO_WAREHOUSE],
+            [['CounterpartyRef', 'StreetRef', 'BuildingNumber'], 'required', 'on' => self::SCENARIO_SAVE],
+            [['CounterpartyRef', 'BuildingNumber', 'Ref'], 'required', 'on' => self::SCENARIO_UPDATE],
         ];
     }
 
@@ -69,6 +104,8 @@ final class Address extends Api
         $scenarios[self::SCENARIO_DELETE] = ['Ref'];
         $scenarios[self::SCENARIO_WAREHOUSE] = ['CityRef', 'FindByString'];
         $scenarios[self::SCENARIO_GET_CITIES] = ['Ref', 'FindByString'];
+        $scenarios[self::SCENARIO_SAVE] = ['BuildingNumber', 'CounterpartyRef', 'Flat', 'Note', 'StreetRef'];
+        $scenarios[self::SCENARIO_UPDATE] = ['BuildingNumber', 'CounterpartyRef', 'Flat', 'Note', 'StreetRef', 'Ref'];
         return $scenarios;
     }
 
@@ -82,6 +119,11 @@ final class Address extends Api
             'FindByString' =>  Yii::t('api', 'Find By String'),
             'Ref' => Yii::t('api', 'Ref'),
             'CityRef' => Yii::t('api', 'City Ref'),
+            'CounterpartyRef' => Yii::t('api', 'Counterparty Ref'),
+            'StreetRef' => Yii::t('api', 'Street Ref'),
+            'BuildingNumber' => Yii::t('api', 'Building Number'),
+            'Flat' => Yii::t('api', 'Flat'),
+            'Note' => Yii::t('api', 'Note'),
         ];
     }
 
@@ -132,6 +174,48 @@ final class Address extends Api
         $this->addFilter($title);
         $this->enableValidation();
         return $this->call('getStreet');
+    }
+
+    /**
+     * Save new address
+     * @param string $building
+     * @param int $flat
+     * @param string $comment
+     * @return array|bool
+     */
+    public function save($building, $flat = null, $comment = null)
+    {
+        return $this->saveAddress(self::SCENARIO_SAVE, $building, $flat, $comment);
+    }
+
+    /**
+     * Update exists address
+     * @param string $building
+     * @param int $flat
+     * @param string $comment
+     * @return array|bool
+     */
+    public function update($building, $flat = null, $comment = null)
+    {
+        return $this->saveAddress(self::SCENARIO_UPDATE, $building, $flat, $comment);
+    }
+
+    /**
+     * Save address details
+     * @param string $method
+     * @param string $building
+     * @param int $flat
+     * @param string $comment
+     * @return array|bool
+     */
+    protected function saveAddress($method, $building, $flat, $comment)
+    {
+        $this->setScenario($method);
+        $this->enableValidation();
+        $this->BuildingNumber = $building;
+        $this->Flat = $flat;
+        $this->Note = $comment;
+        return $this->call($method);
     }
 
     /**

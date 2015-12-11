@@ -45,7 +45,7 @@ $model->getErrors();
 
 ### List of available models
 
- - Address (under development)
+ - Address
  - InternetDocument (under development)
  - Common (under development)
  - ContactPerson (under development)
@@ -81,4 +81,16 @@ $model->getErrors();
  - getWarehouseTypes
     ```php
     $types = $addressModel->getWarehouseTypes();
+    ```
+ - save
+    ```php
+    $addressModel->StreetRef = 'd8364179-4149-11dd-9198-001d60451983';
+    $addressModel->CounterpartyRef = '56300fb9-cbd3-11e4-bdb5-005056801329';
+    $response = $addressModel->save('10', 12, 'Comment');   // building should be in string type
+    ```
+ - update
+    ```php
+    $addressModel->Ref = '503702df-cd4c-11e4-bdb5-005056801329';
+    $addressModel->CounterpartyRef = '56300fb9-cbd3-11e4-bdb5-005056801329';
+    $response = $addressModel->save('10', 12, 'Comment');   // building should be in string type
     ```

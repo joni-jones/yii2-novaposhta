@@ -20,6 +20,11 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected $request;
 
     /**
+     * @var \jones\novaposhta\Api
+     */
+    protected $model;
+
+    /**
      * Create app for run tests
      * @param array $config
      * @throws \yii\base\InvalidConfigException
@@ -102,5 +107,15 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         $reflection = new \ReflectionClass($className);
         $constructor = $reflection->getConstructor();
         $constructor->invokeArgs($mock, $arguments);
+    }
+
+    /**
+     * Skip model attributes
+     */
+    protected function flushAttributes()
+    {
+        $values = array_fill(0, count($this->model->attributes()), null);
+        $attributes = array_combine($this->model->attributes(), $values);
+        $this->model->setAttributes($attributes);
     }
 }

@@ -9,10 +9,11 @@ use jones\novaposhta\http\ClientException;
  */
 class AddressTest extends TestCase
 {
+
     /**
      * @var \jones\novaposhta\Address
      */
-    private $model;
+    protected $model;
 
     protected function setUp()
     {
@@ -215,6 +216,86 @@ class AddressTest extends TestCase
         $response = $this->model->getWarehouseTypes();
         static::assertTrue(is_array($response));
         static::assertEquals(5, count($response));
+    }
+
+    /**
+     * @covers \jones\novaposhta\Address::save
+     */
+    public function testSaveWithFailedValidation()
+    {
+        $this->flushAttributes();
+        $this->request->expects(static::never())
+            ->method('execute');
+
+        $response = $this->model->save('10', 24);
+        static::assertFalse($response);
+        static::assertEquals(2, count($this->model->getErrors()));
+        static::assertEquals('Counterparty Ref cannot be blank.', $this->model->getFirstError('CounterpartyRef'));
+        static::assertEquals('Street Ref cannot be blank.', $this->model->getFirstError('StreetRef'));
+    }
+
+    /**
+     * @covers \jones\novaposhta\Address::update
+     */
+    public function testUpdateFailedValidation()
+    {
+        $this->flushAttributes();
+        $this->request->expects(static::never())
+            ->method('execute');
+
+        static::assertFalse($this->model->update('25', 12));
+        static::assertEquals(2, count($this->model->getErrors()));
+        static::assertEquals('Counterparty Ref cannot be blank.', $this->model->getFirstError('CounterpartyRef'));
+        static::assertEquals('Ref cannot be blank.', $this->model->getFirstError('Ref'));
+    }
+
+    /**
+     * @covers \jones\novaposhta\Address::update
+     */
+    public function testUpdate()
+    {
+        $this->flushAttributes();
+        $this->request->expects(static::once())
+            ->method('execute')
+            ->willReturn([
+                'success' => true,
+                'data' => [
+                    'Ref' => '503702df-cd4c-11e4-bdb5-005056801329',
+                    'Description' => 'Антонова вул. 23/12'
+                ],
+                'warnings' => [],
+                'info' => []
+            ]);
+
+        $this->model->Ref = '503702df-cd4c-11e4-bdb5-005056801329';
+        $this->model->CounterpartyRef = '5953fb16-08d8-11e4-8958-0025909b4e33';
+
+        $response = $this->model->update('23/12');
+        static::assertTrue(is_array($response));
+    }
+
+    /**
+     * @covers \jones\novaposhta\Address::saveAddress
+     */
+    public function testSaveAddress()
+    {
+        $this->flushAttributes();
+        $this->request->expects(static::once())
+            ->method('execute')
+            ->willReturn([
+                'success' => true,
+                'data' => [
+                    'Ref' => '473188f3-d847-11e4-bdb5-005056801329',
+                    'Description' => 'Бердичівська вул. 10 кв. 15'
+                ],
+                'warnings' => ['Building already exists'],
+                'info' => []
+            ]);
+
+        $this->model->StreetRef = 'd8364179-4149-11dd-9198-001d60451983';
+        $this->model->CounterpartyRef = '56300fb9-cbd3-11e4-bdb5-005056801329';
+
+        static::assertTrue(is_array($this->model->save('10', 15)));
     }
 
     /**
