@@ -48,7 +48,7 @@ final class Address extends Api
 
     /**
      * Number of building
-     * @var int
+     * @var string
      */
     public $BuildingNumber;
 
