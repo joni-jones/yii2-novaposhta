@@ -120,7 +120,7 @@ class XmlConverterTest extends \PHPUnit_Framework_TestCase
                         [
                             'Description' => 'Odessa',
                             'Conglomerates' => [
-                                'nv423dfv3sq1', 'mb3jrm55scv2'
+                                'nv423dfv3sq1'
                             ]
                         ]
                     ],

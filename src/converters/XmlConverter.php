@@ -90,7 +90,7 @@ class XmlConverter implements ConverterInterface
             // set current value instead array[key]
             // this allow to remove `item` key without data losing
             if ($key === 'item') {
-                $data = $value;
+                $data = (array) $value;
             }
         }
         unset($value);
