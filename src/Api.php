@@ -82,15 +82,16 @@ class Api extends Model
         }
         $request = $this->requestFactory->create();
         try {
-            $attributes = $this->attributes();
             $class = new \ReflectionClass($this);
-            $request->build($class->getShortName(), $method, $this->getAttributes($attributes));
+            $request->build($class->getShortName(), $method, $this->getValues());
             $response = $request->execute();
         } catch (ClientException $e) {
             $this->addError($method, $e->getMessage());
             return false;
         }
-        if (!(boolean) $response['success']) {
+
+        $success = filter_var($response['success'], FILTER_VALIDATE_BOOLEAN);
+        if (!$success) {
             $this->addErrors([$method => $response['errors']]);
             return false;
         }
@@ -119,5 +120,22 @@ class Api extends Model
         if (!empty($info)) {
             Yii::info($info);
         }
+    }
+
+    /**
+     * Get list of init attributes
+     * @return array
+     */
+    private function getValues()
+    {
+        $values = [];
+        $attributes = $this->attributes();
+        foreach ($attributes as $name) {
+            if (empty($this->$name)) {
+                continue;
+            }
+            $values[$name] = $this->$name;
+        }
+        return $values;
     }
 }

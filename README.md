@@ -19,10 +19,20 @@ All models methods and properties has the same as in official documentation.
 1. Setup configuration:
 ```php
 'components' => [
-    'api_key' => 'specify your api key',
-    'format' => 'json' \\supported json and xml formats
+    'novaposhta' => [
+        'class' => 'jones\novaposhta\Api',
+        'api_key' => 'specify your api key',
+        'format' => 'json' \\supported json and xml formats,
+        // optional params
+        'verify' => false // by default false
+        'certPath' => 'path/to/cer.pem' // path to certificate pem file
+    ]
 ]
 ```
+The json format more appreciated, because response formatting faster.
+
+If you enable `verify` ssl option, you need to specify path to certificate file.
+
 2. Create new api model:
 ```php
 $model = new \jones\novaposhta\Address(new \jones\novaposhta\request\Factory());
@@ -57,38 +67,46 @@ $model->getErrors();
 #### Address model
 
  - getAreas
+    
     ```php
     $areas = $addressModel->getAreas();
     ```
  - getCities
+    
     ```php
     $cities = $addressModel->getCities('Бровари'); // filter not empty add it to `FindByString` request param
     ```
  - delete
+    
     ```php
     $addressModel->Ref = 'fs1d2vbv12'; // if Ref is not specified you will get validation error
     $addressModel->delete();
     ```
  - getWarehouses
+    
     ```php
     $addressModel->CityRef = 'df1j2cmf5d';  // CityRef is required parameter
     $warehouses = $addressModel->getWarehouses('Броварський'); // Street name is additional parameter
     ```
  - getStreet
+    
     ```php
     $streets = $addressModel->getStreet('city ref', 'street name');
     ```
  - getWarehouseTypes
+    
     ```php
     $types = $addressModel->getWarehouseTypes();
     ```
  - save
+    
     ```php
     $addressModel->StreetRef = 'd8364179-4149-11dd-9198-001d60451983';
     $addressModel->CounterpartyRef = '56300fb9-cbd3-11e4-bdb5-005056801329';
     $response = $addressModel->save('10', 12, 'Comment');   // building should be in string type
     ```
  - update
+    
     ```php
     $addressModel->Ref = '503702df-cd4c-11e4-bdb5-005056801329';
     $addressModel->CounterpartyRef = '56300fb9-cbd3-11e4-bdb5-005056801329';

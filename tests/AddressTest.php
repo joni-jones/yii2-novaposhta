@@ -181,6 +181,26 @@ class AddressTest extends TestCase
     }
 
     /**
+     * @covers \jones\novaposhta\Address::getValues
+     */
+    public function testGetCityWarehouses()
+    {
+        $this->request->expects(static::once())
+            ->method('execute')
+            ->willReturn([
+                'success' => true,
+                'data' => [
+                    'Ref' => '0050568002cf',
+                    'Number' => 1
+                ],
+                'info' => '',
+                'warnings' => ''
+            ]);
+        $this->model->CityRef = 'd4ae527baec9';
+        static::assertTrue(is_array($this->model->getWarehouses('Киевская')));
+    }
+
+    /**
      * @covers \jones\novaposhta\Address::getStreet
      */
     public function testGetStreet()

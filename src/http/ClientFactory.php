@@ -18,7 +18,14 @@ class ClientFactory
     public function create()
     {
         $client = new GuzzleClient();
-        $httpClient = Yii::createObject(Client::class, [$client]);
+        $name = 'novaposhta';
+        $components = Yii::$app->getComponents();
+        $verify = false;
+        $certPath = '';
+        if (!empty($components[$name]) && !empty($components[$name]['verify'])) {
+            $certPath = $components[$name]['certPath'];
+        }
+        $httpClient = Yii::createObject(Client::class, [$client, $verify, $certPath]);
         return $httpClient;
     }
 }

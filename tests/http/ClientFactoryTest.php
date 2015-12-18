@@ -8,7 +8,6 @@ use Yii;
 
 /**
  * Class ClientFactoryTest
- * @package jones\novaposhta\tests\http
  */
 class ClientFactoryTest extends TestCase
 {
@@ -27,6 +26,25 @@ class ClientFactoryTest extends TestCase
      */
     public function testCreate()
     {
+        $this->createApp();
+        $client = $this->httpClientFactory->create();
+        static::assertTrue($client instanceof ClientInterface);
+    }
+
+    /**
+     * @covers \jones\novaposhta\http\ClientFactory::create
+     */
+    public function testCreateWithVerify()
+    {
+        $this->createApp([
+            'components' => [
+                'novaposhta' => [
+                    'class' => 'jones\novaposhta\Api',
+                    'verify' => true,
+                    'certPath' => '/etc/ssl/tmp.pem'
+                ]
+            ]
+        ]);
         $client = $this->httpClientFactory->create();
         static::assertTrue($client instanceof ClientInterface);
     }
