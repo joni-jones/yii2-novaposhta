@@ -2,6 +2,7 @@
 namespace jones\novaposhta;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Address
@@ -12,27 +13,9 @@ use Yii;
  */
 final class Address extends Api
 {
-    const SCENARIO_UPDATE = 'update';
-
-    const SCENARIO_DELETE = 'delete';
-
     const SCENARIO_WAREHOUSE = 'warehouse';
 
-    const SCENARIO_GET_CITIES = 'get_cities';
-
-    const SCENARIO_SAVE = 'save';
-
-    /**
-     * Filter for request
-     * @var string
-     */
-    public $FindByString;
-
-    /**
-     * Unique identifier
-     * @var string
-     */
-    public $Ref;
+    const SCENARIO_GET_CITIES = 'getCities';
 
     /**
      * Unique identifier of city
@@ -84,14 +67,14 @@ final class Address extends Api
      */
     public function rules()
     {
-        return [
+        $rules = parent::rules();
+        return ArrayHelper::merge($rules, [
             [['FindByString', 'Ref', 'CityRef', 'CounterpartyRef', 'BuildingNumber', 'Note', 'StreetRef'], 'string'],
             [['Flat'], 'integer'],
-            ['Ref', 'required', 'on' => self::SCENARIO_DELETE],
             ['CityRef', 'required', 'on' => self::SCENARIO_WAREHOUSE],
             [['CounterpartyRef', 'StreetRef', 'BuildingNumber'], 'required', 'on' => self::SCENARIO_SAVE],
             [['CounterpartyRef', 'BuildingNumber', 'Ref'], 'required', 'on' => self::SCENARIO_UPDATE],
-        ];
+        ]);
     }
 
     /**
@@ -101,7 +84,6 @@ final class Address extends Api
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_DELETE] = ['Ref'];
         $scenarios[self::SCENARIO_WAREHOUSE] = ['CityRef', 'FindByString'];
         $scenarios[self::SCENARIO_GET_CITIES] = ['Ref', 'FindByString'];
         $scenarios[self::SCENARIO_SAVE] = ['BuildingNumber', 'CounterpartyRef', 'Flat', 'Note', 'StreetRef'];
@@ -135,17 +117,7 @@ final class Address extends Api
     public function getCities($filter = '')
     {
         $this->addFilter($filter);
-        return $this->call('getCities');
-    }
-
-    /**
-     * Delete contractor address
-     */
-    public function delete()
-    {
-        $this->setScenario(self::SCENARIO_DELETE);
-        $this->enableValidation();
-        return (boolean) $this->call('delete');
+        return $this->call(self::SCENARIO_GET_CITIES);
     }
 
     /**
@@ -216,14 +188,5 @@ final class Address extends Api
         $this->Flat = $flat;
         $this->Note = $comment;
         return $this->call($method);
-    }
-
-    /**
-     * Add filter
-     * @param string $filter
-     */
-    protected function addFilter($filter)
-    {
-        $this->FindByString = $filter;
     }
 }

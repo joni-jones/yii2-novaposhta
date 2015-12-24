@@ -33,7 +33,23 @@ The json format more appreciated, because response formatting faster.
 
 If you enable `verify` ssl option, you need to specify path to certificate file.
 
-2. Create new api model:
+2. Set alias for extension in `bootstrap.php` file:
+```php
+Yii::setAlias('novaposhta', '@vendor/joni-jones/yii2-novaposhta');
+```
+
+3. Configure extension translations:
+```php
+'components' => [
+    'api' => [
+        'class' => 'yii\i18n\PhpMessageSource',
+        'basePath' => '@novaposhta/messages',
+        'sourceLanguage' => 'en',
+    ],
+]
+```
+
+4. Create new api model:
 ```php
 $model = new \jones\novaposhta\Address(new \jones\novaposhta\request\Factory());
 ```
@@ -42,7 +58,8 @@ or
 $model = Yii::createObject(\jones\novaposhta\Address::class);
 ```
 in the second case request factory will be created by Yii DI manager.
-3. Process request:
+
+5. Process request:
 ```php
 $areas = $model->getAreas();
 ```
@@ -111,4 +128,28 @@ $model->getErrors();
     $addressModel->Ref = '503702df-cd4c-11e4-bdb5-005056801329';
     $addressModel->CounterpartyRef = '56300fb9-cbd3-11e4-bdb5-005056801329';
     $response = $addressModel->save('10', 12, 'Comment');   // building should be in string type
+    ```
+
+#### Counterparty model
+
+ - getAreas
+    
+    ```php
+    $counterparties = $counterpartyModel->getCounterparties();
+    ```
+ - getCounterpartyAddresses
+ 
+    ```php
+    $addresses = $counterpartyModel->getCounterpartyAddresses('6e9acced-d072-11e3-95eb-0050568046cd', 'Sender');
+    ```
+ - getCounterpartyContactPersons
+ 
+    ```php
+    $persons = $counterpartyModel->getCounterpartyContactPersons('6e9acced-d072-11e3-95eb-0050568046cd');
+    ```
+ - delete
+    
+    ```php
+    $counterparty->Ref = '0050568002cf'; // if Ref is not specified you will get validation error
+    $counterparty->delete();
     ```

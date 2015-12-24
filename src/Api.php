@@ -11,6 +11,24 @@ use yii\base\Model;
  */
 class Api extends Model
 {
+    const SCENARIO_UPDATE = 'update';
+
+    const SCENARIO_DELETE = 'delete';
+
+    const SCENARIO_SAVE = 'save';
+
+    /**
+     * Unique identifier
+     * @var string
+     */
+    public $Ref;
+
+    /**
+     * Filter for request
+     * @var string
+     */
+    public $FindByString;
+
     /**
      * Enable validation for model attributes
      * @var boolean
@@ -36,6 +54,36 @@ class Api extends Model
     public function __construct(RequestFactory $factory)
     {
         $this->requestFactory = $factory;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            ['Ref', 'required', 'on' => self::SCENARIO_DELETE],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_DELETE] = ['Ref'];
+        return $scenarios;
+    }
+
+    /**
+     * Delete
+     */
+    public function delete()
+    {
+        $this->setScenario(self::SCENARIO_DELETE);
+        $this->enableValidation();
+        return (boolean) $this->call(self::SCENARIO_DELETE);
     }
 
     /**
@@ -137,5 +185,14 @@ class Api extends Model
             $values[$name] = $this->$name;
         }
         return $values;
+    }
+
+    /**
+     * Add filter
+     * @param string $filter
+     */
+    protected function addFilter($filter)
+    {
+        $this->FindByString = $filter;
     }
 }
