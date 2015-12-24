@@ -72,7 +72,7 @@ $model->getErrors();
 
 ### List of available models
 
- - Address
+ - [Address](#address-model)
  - InternetDocument (under development)
  - Common (under development)
  - ContactPerson (under development)
@@ -81,7 +81,7 @@ $model->getErrors();
 
 ### List of implemented methods
 
-#### Address model
+#### <a name="address-model"></a>Address model
 
  - getAreas
     
