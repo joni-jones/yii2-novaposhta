@@ -176,15 +176,7 @@ class Api extends Model
      */
     private function getValues()
     {
-        $values = [];
-        $attributes = $this->attributes();
-        foreach ($attributes as $name) {
-            if (empty($this->$name)) {
-                continue;
-            }
-            $values[$name] = $this->$name;
-        }
-        return $values;
+        return array_filter($this->getAttributes());
     }
 
     /**

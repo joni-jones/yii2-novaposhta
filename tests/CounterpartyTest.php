@@ -101,4 +101,74 @@ class CounterpartyTest extends TestCase
 
         static::assertEquals(1, count($this->model->getCounterpartyContactPersons($ref)));
     }
+
+    /**
+     * @covers \jones\novaposhta\Counterparty::save
+     */
+    public function testSave()
+    {
+        $data = $this->getContractorData();
+        $this->request->expects(static::once())
+            ->method('build')
+            ->with('Counterparty', 'save', $data)
+            ->willReturnSelf();
+
+        $this->request->expects(static::once())
+            ->method('execute')
+            ->willReturn([
+                'success' => true,
+                'data' => [
+                    'Ref' => '005056801329'
+                ],
+                'warnings' => [],
+                'info' => []
+            ]);
+
+        $this->model->setAttributes($data);
+        static::assertNotEmpty($this->model->save());
+    }
+
+    /**
+     * @covers \jones\novaposhta\Counterparty::update
+     */
+    public function testUpdate()
+    {
+        $data = $this->getContractorData();
+        $data['Ref'] = '005056801329';
+
+        $this->request->expects(static::once())
+            ->method('build')
+            ->with('Counterparty', 'update', $data)
+            ->willReturnSelf();
+
+        $this->request->expects(static::once())
+            ->method('execute')
+            ->willReturn([
+                'success' => true,
+                'data' => $data,
+                'warnings' => [],
+                'info' => []
+            ]);
+
+        $this->model->setAttributes($data);
+        static::assertNotEmpty($this->model->update());
+    }
+
+    /**
+     * Get contractor test details
+     * @return array
+     */
+    protected function getContractorData()
+    {
+        return [
+            'CityRef' => '22nan2c67462',
+            'CounterpartyProperty' => 'Recipient',
+            'CounterpartyType' => 'PrivatePerson',
+            'Email' => 'test.contractor@test.com',
+            'FirstName' => 'Ivan',
+            'LastName' => 'Ivanov',
+            'MiddleName' => 'Ivanovich',
+            'Phone' => '0452345688'
+        ];
+    }
 }

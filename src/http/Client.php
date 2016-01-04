@@ -18,27 +18,11 @@ class Client implements ClientInterface
     private $client;
 
     /**
-     * SSL verify
-     * @var boolean
-     */
-    private $verify;
-
-    /**
-     * Path to SSL pem file
-     * @var string
-     */
-    private $certPath;
-
-    /**
      * @param GuzzleClient $client
-     * @param bool $verify
-     * @param string $certPath
      */
-    public function __construct(GuzzleClient $client, $verify = false, $certPath = '')
+    public function __construct(GuzzleClient $client)
     {
         $this->client = $client;
-        $this->verify = $verify;
-        $this->certPath = $certPath;
     }
 
     /**
@@ -52,7 +36,6 @@ class Client implements ClientInterface
     public function execute(RequestInterface $request, $contentType, $url)
     {
         $options = [
-            'verify' => $this->verify ? $this->certPath : false,
             'headers' => [
                 'content-type' => $contentType
             ],

@@ -22,16 +22,11 @@ All models methods and properties has the same as in official documentation.
     'novaposhta' => [
         'class' => 'jones\novaposhta\Api',
         'api_key' => 'specify your api key',
-        'format' => 'json' \\supported json and xml formats,
-        // optional params
-        'verify' => false // by default false
-        'certPath' => 'path/to/cer.pem' // path to certificate pem file
+        'format' => 'json' \\supported json and xml formats
     ]
 ]
 ```
 The json format more appreciated, because response formatting faster.
-
-If you enable `verify` ssl option, you need to specify path to certificate file.
 
 2. Set alias for extension in `bootstrap.php` file:
 ```php
@@ -146,6 +141,28 @@ $model->getErrors();
  
     ```php
     $persons = $counterpartyModel->getCounterpartyContactPersons('6e9acced-d072-11e3-95eb-0050568046cd');
+    ```
+ - save
+
+    ```php
+    // set model attributes
+    $counterpartyModel->cityRef = '0050568046cd';
+    .
+    .
+    .
+    $counterpartyModel->Phone = '0567894512';
+    $response = $counterpartyModel->save();
+    ```
+ - update
+
+    ```php
+    // set model attributes
+    $counterpartyModel->Ref = '005056801329';
+    .
+    .
+    .
+    $counterpartyModel->Email = 'contractor@test.com';
+    $response = $counterpartyModel->update();
     ```
  - delete
     
