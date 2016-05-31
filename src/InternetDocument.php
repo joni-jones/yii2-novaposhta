@@ -5,7 +5,7 @@ namespace jones\novaposhta;
  * Class InternetDocument
  * @package jones\novaposhta
  * @author sergii gamaiunov <hello@webkadabra.com?
- * 
+ *
  * This model contain methods to create and configure orders
  */
 final class InternetDocument extends Api
