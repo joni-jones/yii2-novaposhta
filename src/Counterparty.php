@@ -92,7 +92,7 @@ final class Counterparty extends Api
             [
                 [
                     'CityRef', 'CounterpartyProperty', 'CounterpartyType', 'FirstName', 'LastName',
-                    'MiddleName', 'Phone'
+                    'Phone'
                 ],
                 'required', 'on' => self::SCENARIO_SAVE
             ],
