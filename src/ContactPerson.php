@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
  * Class ContactPerson
  * @package jones\novaposhta
  * @author sergii gamaiunov <hello@webkadabra.com>
- *
+ * 
  * This model contain methods to work with contact person data
  */
 final class ContactPerson extends Api
@@ -56,7 +56,7 @@ final class ContactPerson extends Api
                 'required', 'on' => self::SCENARIO_SAVE
             ],
             [
-                ['FirstName', 'LastName', 'Phone'],
+                ['CounterpartyRef', 'Ref', 'FirstName', 'LastName', 'Phone'],
                 'required', 'on' => self::SCENARIO_UPDATE
             ],
         ]);
@@ -73,7 +73,7 @@ final class ContactPerson extends Api
             'CounterpartyRef', 'FirstName', 'LastName', 'MiddleName', 'Email', 'Phone'
         ];
         $scenarios[self::SCENARIO_UPDATE] = [
-            'FirstName', 'LastName', 'MiddleName', 'Email', 'Phone'
+            'Ref', 'CounterpartyRef', 'FirstName', 'LastName', 'MiddleName', 'Email', 'Phone'
         ];
         return $scenarios;
     }
