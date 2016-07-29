@@ -15,6 +15,10 @@ final class Counterparty extends Api
 
     const TYPE_RECIPIENT = 'Recipient';
 
+    const COUNTERPARTY_TYPE_PRIVATE_PERSON = 'PrivatePerson';
+
+    const COUNTERPARTY_TYPE_ORG = 'Organization';
+
     const SCENARIO_GET_COUNTERPARTIES = 'getCounterparties';
 
     const SCENARIO_GET_ADDRESSES = 'getCounterpartyAddresses';
