@@ -4,13 +4,16 @@ namespace jones\novaposhta;
 /**
  * Class InternetDocument
  * @package jones\novaposhta
- * @author sergii gamaiunov <hello@webkadabra.com?
+ * @author sergii gamaiunov <hello@webkadabra.com>
  *
  * This model contain methods to create and configure orders
  */
 final class InternetDocument extends Api
 {
     const SCENARIO_DOCUMENT_PRICE = 'getDocumentPrice';
+
+    const PAYER_TYPE_SENDER = 'Sender';
+    const PAYER_TYPE_RECIPIENT = 'Recipient';
 
     /** @var string */
     public $CitySender;
@@ -41,6 +44,8 @@ final class InternetDocument extends Api
     public $RecipientsPhone;
     public $ContactRecipient;
     public $Description;
+    public $BackwardDeliveryData;
+    public $OptionsSeat;
 
     /**
      * Get price of delivery between two cities
@@ -83,6 +88,8 @@ final class InternetDocument extends Api
             'Weight' => $this->Weight,
             'Cost' => $this->Cost,
             'VolumeGeneral' => $this->VolumeGeneral,
+            'BackwardDeliveryData' => $this->BackwardDeliveryData,
+            'OptionsSeat' => $this->OptionsSeat,
         ];
         return $this->call('save', $query);
     }
