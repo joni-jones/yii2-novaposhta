@@ -46,6 +46,7 @@ final class InternetDocument extends Api
     public $Description;
     public $BackwardDeliveryData;
     public $OptionsSeat;
+    public $AdditionalInformation;
 
     /**
      * Get price of delivery between two cities
@@ -81,6 +82,7 @@ final class InternetDocument extends Api
             'ContactRecipient' => $this->ContactRecipient,
             'RecipientsPhone' => $this->RecipientsPhone,
             'Description' => $this->Description,
+            'AdditionalInformation' => $this->AdditionalInformation,
 
             'CitySender' => $this->CitySender,
             'CityRecipient' => $this->CityRecipient,
