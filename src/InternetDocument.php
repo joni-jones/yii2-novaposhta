@@ -11,6 +11,7 @@ namespace jones\novaposhta;
 final class InternetDocument extends Api
 {
     const SCENARIO_DOCUMENT_PRICE = 'getDocumentPrice';
+    const SCENARIO_DELIVERY_DATE_ESTIMATE = 'getDocumentDeliveryDate';
 
     const PAYER_TYPE_SENDER = 'Sender';
     const PAYER_TYPE_RECIPIENT = 'Recipient';
@@ -53,15 +54,15 @@ final class InternetDocument extends Api
      * @return mixed
      */
     function getDocumentPrice() {
-        $query = [
-            'CitySender' => $this->CitySender,
-            'CityRecipient' => $this->CityRecipient,
-            'ServiceType' => $this->ServiceType,
-            'Weight' => $this->Weight,
-            'Cost' => $this->Cost,
-            'VolumeGeneral' => $this->VolumeGeneral
-        ];
-        return $this->call('getDocumentPrice', $query);
+        return $this->call('getDocumentPrice');
+    }
+    
+    /**
+     * Get estimated delivery date
+     * @return mixed
+     */
+    function getDocumentDeliveryDate() {
+        return $this->call('getDocumentDeliveryDate');
     }
 
     /**
