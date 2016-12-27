@@ -30,6 +30,8 @@ final class InternetDocument extends Api
     public $DateTime;
     /** @var float volume of parcel in qubic centimeters (width * height * length / 1000000) */
     public $VolumeGeneral;
+    /** @var string */
+    public $InfoRegClientBarcodes;
 
     public $SenderAddress;
     public $SeatsAmount;
@@ -93,6 +95,7 @@ final class InternetDocument extends Api
             'VolumeGeneral' => $this->VolumeGeneral,
             'BackwardDeliveryData' => $this->BackwardDeliveryData,
             'OptionsSeat' => $this->OptionsSeat,
+            'InfoRegClientBarcodes' => $this->InfoRegClientBarcodes,
         ];
         return $this->call('save', $query);
     }
