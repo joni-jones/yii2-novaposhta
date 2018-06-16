@@ -128,7 +128,9 @@ class Api extends Model
         if ($this->isValidationEnabled() && !$this->validate()) {
             return false;
         }
+
         $request = $this->requestFactory->create();
+
         try {
             $class = new \ReflectionClass($this);
             $request->build($class->getShortName(), $method, $this->getValues());
@@ -186,5 +188,9 @@ class Api extends Model
     protected function addFilter($filter)
     {
         $this->FindByString = $filter;
+    }
+
+    public function setRequestFactory(RequestFactory $factory) {
+        $this->requestFactory = $factory;
     }
 }
