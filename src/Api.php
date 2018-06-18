@@ -192,5 +192,6 @@ class Api extends Model
 
     public function setRequestFactory(RequestFactory $factory) {
         $this->requestFactory = $factory;
+        return $this;
     }
 }
