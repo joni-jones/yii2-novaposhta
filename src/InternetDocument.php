@@ -51,6 +51,25 @@ final class InternetDocument extends Api
     public $OptionsSeat;
     public $AdditionalInformation;
 
+    public $DocumentRefs = [];
+
+    public function rules()
+    {
+        return [
+            ['DocumentRefs', 'required', 'on' => self::SCENARIO_DELETE],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_DELETE] = ['DocumentRefs'];
+        return $scenarios;
+    }
+
     /**
      * Get price of delivery between two cities
      * @return mixed
