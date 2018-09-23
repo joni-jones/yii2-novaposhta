@@ -109,6 +109,24 @@ final class Address extends Api
         ];
     }
 
+    protected static $_areas = null;
+    /**
+     * Get list of cities
+     * @param string $filter
+     * @return array|bool
+     */
+    public function getArea($filter = '')
+    {
+        if (self::$_areas === null)
+            self::$_areas = $this->getAreas();
+
+        foreach(self::$_areas as $area)
+            if ($filter == $area['Description'])
+                return $area;
+
+        return null;
+    }
+
     /**
      * Get list of cities
      * @param string $filter
