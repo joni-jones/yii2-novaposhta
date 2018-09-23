@@ -1,5 +1,5 @@
 {
-    "name": "wowkaster/yii2-novaposhta",
+    "name": "webkadabrs/yii2-novaposhta",
     "description": "Yii2 extension to work with Nova Poshta web api",
     "keywords": ["yii2","extension","api","novaposhta"],
     "type": "yii2-extension",
