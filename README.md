@@ -1,7 +1,7 @@
 Yii2 extension for Nova Poshta API
 ==================================
 
- > IMPORTANT! Extension is already under development
+ > IMPORTANT! Extension is under development
 
 Extension to work with Nova Poshta API
 
@@ -12,7 +12,24 @@ Extension to work with Nova Poshta API
 [![License](https://poser.pugx.org/joni-jones/yii2-novaposhta/license)](https://packagist.org/packages/joni-jones/yii2-novaposhta)
 [![Code Coverage](https://scrutinizer-ci.com/g/joni-jones/yii2-novaposhta/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/joni-jones/yii2-novaposhta/?branch=master)
 
-### Usage
+### Installation via Composer
+
+Since this is a fork repository, and original repo is not available on Packagist, you need to add this to your `composer.json`
+
+```
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/Webkadabra/yii2-novaposhta"
+    }
+  ],
+```
+
+After that, you can install package with a command:
+
+> composer require webkadabra/yii2-novaposhta
+
+### Setup
 
 All models methods and properties has the same as in official documentation.
 
@@ -30,23 +47,32 @@ The json format more appreciated, because response formatting faster.
 
 2. Set alias for extension in `bootstrap.php` file:
 ```php
-Yii::setAlias('novaposhta', '@vendor/joni-jones/yii2-novaposhta');
+Yii::setAlias('novaposhta', '@vendor/webkadabra/yii2-novaposhta');
 ```
 
+Or, if you use Yii2 Advanced template, add this to your `common/config/bootstrap.php`
+```
+Yii::setAlias('novaposhta', dirname(dirname(__DIR__)) . '/vendor/webkadabra/yii2-novaposhta');
+
+```
 3. Configure extension translations:
 ```php
 'components' => [
-    'api' => [
-        'class' => 'yii\i18n\PhpMessageSource',
-        'basePath' => '@novaposhta/messages',
-        'sourceLanguage' => 'en',
+    'i18n' => [
+        'translations' => [
+            'api' => [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath' => '@novaposhta/messages',
+                'sourceLanguage' => 'en',
+            ],
+        ],
     ],
 ]
 ```
 
 4. Create new api model:
 ```php
-$model = new \jones\novaposhta\Address(new \jones\novaposhta\request\Factory());
+$model = new \jones\novaposhta\Address(new \jones\novaposhta\request\RequestFactory());
 ```
 or
 ```php

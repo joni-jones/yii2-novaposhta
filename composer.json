@@ -1,5 +1,5 @@
 {
-    "name": "joni-jones/yii2-novaposhta",
+    "name": "webkadabra/yii2-novaposhta",
     "description": "Yii2 extension to work with Nova Poshta web api",
     "keywords": ["yii2","extension","api","novaposhta"],
     "type": "yii2-extension",
@@ -13,9 +13,8 @@
     "version": "0.0.6",
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.5.0",
         "yiisoft/yii2": "2.*",
-        "guzzlehttp/guzzle": "6.1.*"
+        "guzzlehttp/guzzle": "^6.0 || ^7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4"
